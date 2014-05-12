@@ -1,23 +1,15 @@
 {
   "name": "m.js",
+  "preferGlobal": true,
   "version": "0.1.0",
-  "description": "Minimalistic dialect of javascript",
+  "author": "thmour <mtheofilos@gmail.com>",
+  "description": "Minimal dialect of javascript",
   "bin": {
-    "mjs": "main.js"
-  },
-  "dependencies": {
-    "jison": "0.4.x",
-    "commander": "2.2.x",
-    "lodash": "2.4.x",
-	"js-beautify": "1.5.x"
-  },
-  "devDependencies": {},
-  "scripts": {
-    "test": "test"
+    "mjs": "./bin/m.js"
   },
   "repository": {
     "type": "git",
-    "url": "none"
+    "url": "https://github.com/thmour/m.js.git"
   },
   "keywords": [
     "m.js",
@@ -25,6 +17,14 @@
     "compiler",
     "javascript"
   ],
-  "author": "mtheofilos",
-  "license": "MIT"
+  "dependencies": {
+    "jison": "0.4.x",
+    "commander": "2.2.x",
+    "lodash": "2.4.x",
+	"js-beautify": "1.5.x"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.6"
+  }
 }
