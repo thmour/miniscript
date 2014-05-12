@@ -1,0 +1,30 @@
+{
+  "name": "m.js",
+  "version": "0.1.0",
+  "description": "Minimalistic dialect of javascript",
+  "bin": {
+    "mjs": "main.js"
+  },
+  "dependencies": {
+    "jison": "0.4.x",
+    "commander": "2.2.x",
+    "lodash": "2.4.x",
+	"js-beautify": "1.5.x"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "none"
+  },
+  "keywords": [
+    "m.js",
+    "language",
+    "compiler",
+    "javascript"
+  ],
+  "author": "mtheofilos",
+  "license": "MIT"
+}
