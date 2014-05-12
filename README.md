@@ -1,4 +1,7 @@
 m.js
 ====
 
-Minimal javascript
+Install:
+```shell
+$ npm install m.js -g
+```
