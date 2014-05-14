@@ -356,6 +356,8 @@ call : member
      { $$ = {token: 'dot', left: {token: 'dot', left: $1, right: {token: 'identifier', value: 'prototype'}}, right: $3} }
      | call '.' member
      { $$ = {token: 'dot', left: $1, right: $3} }
+     | lamda '.' member
+     { $$ = {token: 'dot', left: $1, right: $3} }
      | call array
      { $$ = {token: 'access', left: $1, right: $3} }
      | call ':' cmember
