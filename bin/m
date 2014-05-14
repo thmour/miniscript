@@ -18,6 +18,7 @@ var cmd = require('commander'),
 			var src_text = fs.readFileSync(src).toString();
 			var out_text = compiler.compile(src_text);
 			if(!out) out = src.replace(/\.mjs|\.txt/, '.js');
+			else if(!path.extname(out)) out += '.js';
 			fs.writeFileSync(out, jsb(out_text));
 		} else {
 			console.log('File input does not exist');

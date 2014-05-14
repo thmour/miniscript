@@ -1,7 +1,8 @@
 ﻿%lex
 %%
 
-'//'[^\n]*                            /* ignore */      
+'//'[^\n]*                            /* ignore */
+\/\*([\s\S]*?)\*\/                    /* ignore */      
 \s+                                   /* ignore */ 
 '++'|'--'|'::'                        return yytext 
 [-+*/%&^|]'='|'<<='|'>>='|'>>>='      return 'ASOP' 
@@ -35,7 +36,8 @@
 \b"instanceof"\b                      return "INSTANCEOF" 
 \b"let"\b                             return "LET"        
 \b"new"\b                             return "NEW"        
-\b"null"\b                            return "NULL"    
+\b"null"\b                            return "NULL" 
+\b"of"\b                              return "OF"   
 \b"print"\b                           return "PRINT"      
 \b"private"\b                         return "PRIVATE"    
 \b"public"\b                          return "PUBLIC"     
@@ -78,6 +80,7 @@
 %left '%'
 %left BIT
 %left INSTANCEOF
+%left TO
 %left '::'
 
 %start S
@@ -85,7 +88,7 @@
 
 S : prg EOF 
   { return $1 }
-  | '`' bool EOF 
+  | '`' bool EOF
   { return $2 }
 ;
 
@@ -157,12 +160,12 @@ body_opt :| '{' prg '}'
           { $$ = $2 }
 ;
 
-parents_opt :| ':' '[' mCNAME ']'
-             { $$ = $3 }
+parents_opt :| ':' mCNAME
+             { $$ = $2 }
 ;
 
-mCNAME : mCNAME ',' CNAME
-       { $$ = $1.concat($3) }
+mCNAME : mCNAME CNAME
+       { $$ = $1.concat($2) }
        | CNAME
        { $$ = [$1] }
 ;
@@ -260,10 +263,12 @@ while : DO prg ';' WHILE bool
       { $$ = {token: 'while', condition: $2, body: $3 } }
 ;
 
-for : FOR bool AS mult_idf prg ';'
-    { $$ = {token: 'for', collection: $2, iterator_list: $4, body: $5} }
-    | FOR IDF IN bool prg ';'
-    { $$ = {token: 'forin', collection: $4, iterator: $2, body: $5} }
+for : FOR mult_idf operator bool prg ';'
+    { $$ = {token: 'for', collection: $4, op: $3, iterators: $2, body: $5} }
+;
+
+operator : IN
+         | OF
 ;
 
 mult_idf : mult_idf ',' IDF
@@ -317,6 +322,8 @@ boolean : bool BOOL bool
         { $$ = [$1,$2,$3] }
         | bool INSTANCEOF CNAME
 	{ $$ = [$1,$2,$3] }
+        | bool TO bool
+        { $$ = [{token: 'range', from: $1, to: $3}] }
 	| bool '?' bool ',' bool
 	{ $$ = [$1,'?',$3,':',$5] }
 ;
@@ -412,8 +419,6 @@ oliteral : number
 
 array : '[' args_opt ']'
       { $$ = {token: 'array', value_list: $2} }
-      | '[' bool TO bool ']'
-      { $$ = {token: 'range', from: $2, to: $4} }
 ;
 
 object : '{' assigns_opt '}'

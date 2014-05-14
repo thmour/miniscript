@@ -1,7 +1,7 @@
 {
   "name": "m.js",
   "preferGlobal": true,
-  "version": "0.1.4",
+  "version": "0.1.5",
   "author": "thmour <mtheofilos@gmail.com>",
   "description": "Minimal dialect of javascript",
   "bin": {
@@ -21,7 +21,7 @@
     "jison": "0.4.x",
     "commander": "2.2.x",
     "lodash": "2.4.x",
-	"js-beautify": "1.5.x"
+    "js-beautify": "1.5.x"
   },
   "license": "MIT",
   "engines": {
