@@ -1,12 +1,4 @@
-arr = []
+arr = [1,2,3,4,5]
+i = -1
 
-for i of 1..10
-	arr.push({
-		a = i
-		b = i * 3
-	})
-;
-
-for a,b in arr
-	print 'a: %a\tb: %b'
-;
+while arr:[++i]

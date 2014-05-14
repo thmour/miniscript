@@ -356,6 +356,8 @@ call : member
      { $$ = {token: 'dot', left: {token: 'dot', left: $1, right: {token: 'identifier', value: 'prototype'}}, right: $3} }
      | call '.' member
      { $$ = {token: 'dot', left: $1, right: $3} }
+     | call array
+     { $$ = {token: 'access', left: $1, right: $3} }
      | call ':' cmember
      { $$ = {token: 'access', left: $1, right: $3} }
      | call fargs
@@ -366,13 +368,10 @@ call : member
      { $$ = {token: 'dot', left: '@@', right: $2} }
      | DOT member
      { $$ = {token: 'dot', left: {token: 'this'}, right: $2} }
-     | literal '.' member
-     { $$ = {token: 'dot', left: $1, right: $3} }
 ;
 
 cmember : member
         | oliteral
-        | array
 ;
 
 fargs : '(' args_opt ')'
