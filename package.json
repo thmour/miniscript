@@ -1,11 +1,11 @@
 {
   "name": "m.js",
   "preferGlobal": true,
-  "version": "0.1.6",
+  "version": "0.1.8",
   "author": "thmour <mtheofilos@gmail.com>",
   "description": "Minimal dialect of javascript",
   "bin": {
-    "mjs": "./bin/m"
+    "m.js": "./bin/m"
   },
   "repository": {
     "type": "git",

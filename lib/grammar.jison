@@ -72,6 +72,7 @@
 /lex
 
 %left '='
+%left TO
 %left '?'
 %left BOOL
 %left COMP
@@ -80,7 +81,6 @@
 %left '%'
 %left BIT
 %left INSTANCEOF
-%left TO
 %left '::'
 
 %start S
@@ -149,7 +149,7 @@ mcassign : mcassign cassign
 cassign : IDF '=' bool
         { $$ = [$1,$3] }
         | IDF
-        { $$ = [$1, {token:'undefined'}] }
+        { $$ = [$1, {token:'null'}] }
 ;
 
 constructor_opt : largs_opt body_opt
@@ -321,11 +321,11 @@ boolean : bool BOOL bool
         | bool '%' bool
         { $$ = [$1,$2,$3] }
         | bool INSTANCEOF CNAME
-	{ $$ = [$1,$2,$3] }
+		{ $$ = [$1,$2,$3] }
         | bool TO bool
         { $$ = [{token: 'range', from: $1, to: $3}] }
-	| bool '?' bool ',' bool
-	{ $$ = [$1,'?',$3,':',$5] }
+		| bool '?' bool ',' bool
+		{ $$ = [$1,'?',$3,':',$5] }
 ;
 
 uminus : call
@@ -359,7 +359,7 @@ call : member
      | lamda '.' member
      { $$ = {token: 'dot', left: $1, right: $3} }
      | call array
-     { $$ = {token: 'access', left: $1, right: $3} }
+     { $$ = {token: 'access', left: $1, right: $2} }
      | call ':' cmember
      { $$ = {token: 'access', left: $1, right: $3} }
      | call fargs

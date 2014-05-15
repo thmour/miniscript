@@ -4,24 +4,23 @@ class List
 
 class Stack
 	{
-		args = arguments
-		for args:0 instanceof Array ? args:0, args as arg
+		for arg of arguments
 			@push(arg)
 		;
-		@head = stack ? stack.value, null
 	}
 	
 	static
-		max_size = 50
+		max_size = 5
 	
 	public
-		head
 		size = 0
+		getHead = # {
+			return stack.value
+		}
 		push = # value {
 			if @size < @@max_size
 				stack = new List(value, stack)
 				@size++
-				@head = stack.value
 			else
 				throw new Error("Stack is full, can't push")
 			;
@@ -31,7 +30,6 @@ class Stack
 				temp = stack.value
 				stack = stack.next
 				@size--
-				@head = stack.value
 				
 				return temp
 			else
@@ -43,13 +41,12 @@ class Stack
 		stack
 ;
 
-stack1 = new Stack(1,2,3,4)
-stack2 = new Stack([0..49])
+stack = new Stack(1,2,3,4,5)
 
 try
-	stack2.push(10)
+	stack.push(6)
 catch error
 	print error.message
 ;
 
-print stack1.head, stack2.head
+print stack.getHead()
