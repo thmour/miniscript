@@ -6,4 +6,4 @@ Install:
 $ npm install m.js -g
 ```
 
-It's in beta phase, and rapid changes take place, old code may not work now
+v0.1.8 stable build, working on github page + documentation

@@ -18,10 +18,10 @@
     "javascript"
   ],
   "dependencies": {
-    "jison": "0.4.x",
-    "commander": "2.2.x",
-    "lodash": "2.4.x",
-    "js-beautify": "1.5.x"
+    "jison": "0.4.13",
+    "commander": "2.2.0",
+    "lodash": "2.4.1",
+    "js-beautify": "1.5.1"
   },
   "license": "MIT",
   "engines": {
