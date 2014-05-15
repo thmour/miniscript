@@ -1,0 +1,240 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>m.js</title>
+    <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+    <link type="text/css" rel="stylesheet" href="css/shCoreMjs.css" />
+</head>
+<body>
+    <table id="bar">
+        <tr>
+            <td>
+                <span id="logo">
+                    <span id="m">m</span><span>.js</span>
+                </span>
+            </td>
+            <td>
+                <div id='cssmenu'>
+                    <ul>
+                        <li><a href='#'><span>Try</span></a></li>
+                        <li><a href='#'><span>Documentation</span></a></li>
+                        <li class='last'><a href='https://github.com/thmour/m.js' target="_blank"><span>View on Github</span></a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <span id="bug"></span>
+    <p>
+        <span class='header'>What?</span><br><br>
+        <b>m.js</b> is a minimal dialect of javascript. It inherits every good part of Python, Ruby and C++. You can compile the code to javascript or run it directly from the console.
+    </p>
+    <p>
+        <span class='header'>Why?</span><br><br>
+        It is semicolon free, indent independent, DRY, readable and easy to learn. At the end, it's all javascript!
+    </p>
+    <p>
+        <span class='header'>Install:</span><br><br>
+        You can install the <b>m.js</b> compiler using the following command:
+    </p>
+    <p class="command">$ npm install m.js -g</p>
+    <p>
+        then you can either run your script, or output the javascript file:
+    </p>
+    <p class="command">
+        $ mjs run myscript[.mjs]<br>
+        $ mjs out myscript[.mjs] [output_name[.js]]
+    </p>
+    <p class="middle">
+        <span class='header'>Let's start!</span><br><br>
+        Below is your first hello world program:
+    </p>
+    <code class="block">
+        <pre class="brush: mjs;">
+            print 'Hello World', '!'
+        </pre>
+        <pre class="brush: mjs;">
+            console.log('Hello World', '!');
+        </pre>
+    </code>
+    <p class="middle">
+        As you see it resembles python, how about functions?
+    </p>
+    <code class="block">
+        <pre class="brush: mjs;">
+            foo = # bar, baz {
+                print bar, baz
+            }
+        </pre>
+        <pre class="brush: js;">
+            var foo;
+            foo = function(bar, baz) {
+                console.log(bar, baz);
+            };
+        </pre>
+    </code>
+    <p class="middle">
+        You can't define a function as it is. It must be assigned to a variable.
+        It is possible to give a name to a function, achieving recursion on anonymous functions.
+    </p>
+    <code class="block">
+        <pre class="brush: mjs;">
+            print # fib : n {
+                if n == 0 or n == 1
+                    return n
+                else
+                    return fib(n-1) + fib(n-2)
+                ;
+            }(8)
+        </pre>
+        <pre class="brush: js;">
+            console.log((function fib(n) {
+                if (n == 0 || n == 1) {
+                    return n;
+                } else {
+                    return fib(n - 1) + fib(n - 2);
+                }
+            })(8));
+        </pre>
+    </code>
+    <p class="middle">
+        As you saw many things are considered obvious and have been removed from <b>m.js</b> grammar like parentheses and code blocks.<br>
+        Next stop, assignments:
+    </p>
+    <code class="block">
+        <pre class="brush: mjs;">                     
+            x = 5
+
+            y = 6
+
+            a, b = [x,y]
+
+            a += 5
+
+            x = y = a
+        </pre>
+        <pre class="brush: js;">
+            var x, y, a, b;
+            x = 5;
+            y = 6;
+            _c = [x, y];
+            a = _c[0];
+            b = _c[1];
+            a += 5;
+            x = y = a;
+        </pre>
+    </code>
+    <p class="middle">
+        This is what you can only do with asignments (for now). Let's continue with a full if statement:
+    </p>
+    <code class="block">
+        <pre class="brush: mjs;">
+            a = 5
+            if a < 1
+                print 'a is less than 1'
+            elif a < 4
+                print 'a is less than 4'
+            else
+                print 'a is greater than or equal to 4'
+            ;
+        </pre>
+        <pre class="brush: js;">
+            var a;
+            a = 5;
+            if (a < 1) {
+                console.log('a is less than 1');
+            } else if (a < 4) {
+                console.log('a is less than 4');
+            } else {
+                console.log('a is greater than or equal to 4');
+            }
+        </pre>
+    </code>
+    <p class="middle">
+        Only a ';' is required to finish an if statement, the same goes for other statements containing code blocks.<br>
+        About time for a switch statement:
+    </p>
+    <code class="block">
+        <pre class="brush: mjs;">
+            switch john.likes
+	            case 'basket', 'football'
+		            send_message(john, 'Well done!')
+	            case 'beerpong'
+		            send_message(john, 'Get a life')
+	            default
+		            send_message(john, 'Whatever...')
+            ;
+        </pre>
+        <pre class="brush: js;">
+            switch (john.likes) {
+                case 'basket':
+                case 'football':
+                    send_message(john, 'Well done!');
+                    break;
+                case 'beerpong':
+                    send_message(john, 'Get a life');
+                    break;
+                default:
+                    send_message(john, 'Whatever...');
+            }
+        </pre>
+    </code>
+    <p class="middle">
+        Pretty neat, huh? At least <b>m.js</b> tries to keep it simple and elegant.
+        Now we can check out some for loops:
+    </p>
+    <code class="block">
+        <pre class="brush: mjs;">
+            obj = { a=1 b=2 c=3 }
+            db = [{ user='peter' age=21 }, { user='john' age=32 }, { user='ralph' age=27 }]
+
+            for i of 1..5
+	            print i
+            ;
+
+            for key in obj
+	            print key + ':', obj[key]
+            ;
+
+            String::capitalize = # {
+                return this:0.toUpperCase() + this.slice(1)
+            }
+
+            for user, age in db
+                print "%user.capitalize() is %{age + 1} years old" //Don't tell anyone!
+            ;
+        </pre>
+        <pre class="brush: js;">
+            var obj, db, i, key, user, age, _i, _l;
+            obj = { a: 1, b: 2, c: 3 };
+            db = [{user: 'peter', age: 21}, {user: 'john', age: 32}, {user: 'ralph', age: 27}];
+            for (i = 0; ++i <= 5;) {
+                console.log(i);
+            }
+
+            for (key in obj) {
+                console.log(key + ':', obj[key]);
+            }
+
+            String.prototype.capitalize = function() {
+                return this[0].toUpperCase() + this.slice(1);
+            };
+
+            for (_i = -1, _l = db.length; ++_i < _l;) {
+                user = db[_i].user;
+                age = db[_i].age;
+                console.log(user.capitalize() + " is " + (age + 1) + " years old");
+            }
+        </pre>
+    </code>
+    <p class="middle">
+        You see that the for in behaves different when there are more than one iterators.
+        This is more useful than splitting every member of an object into 2 variables.<br>
+    </p>
+    <script type="text/javascript" src="scripts/shCore.js"></script>
+    <script type="text/javascript" src="scripts/shBrushMjs.js"></script>
+    <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+    <script type="text/javascript">SyntaxHighlighter.all();</script>
+</body>
+</html>

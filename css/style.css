@@ -1,0 +1,187 @@
+@import url(http://fonts.googleapis.com/css?family=Inconsolata);
+@import url(http://fonts.googleapis.com/css?family=Vollkorn);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+
+body {
+  margin: 0;
+  margin-bottom: 5em;
+  width: 100%;
+  height: 100%;
+  background: #fbfae6;
+  color: #ee352a;
+  font-family: 'Inconsolata', Arial, Serif;
+  font-weight: 400;
+}
+
+body * {
+    margin: 0;
+    padding: 0;
+}
+
+#bug {
+    display: block;
+    height: 5.5em;
+}
+
+.command {
+    display: inline-block;
+    background: white;
+    color: #333;
+    font-family: Consolas, "Liberation Mono", Courier, monospace;
+    font-size: 14px;
+    padding: 0.75em;
+    border: solid 1px #ddd;
+    margin-left: 2em;
+    margin-top: 1.5em;
+}
+
+.block {
+    margin: 1.5em;
+    height: 1em;
+}
+
+.block>div {
+    width: 47%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.header {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+p {
+  font-size: 1.5em;
+  margin: 1.5em 1.5em 0 1.5em;
+  width: 60%;
+}
+
+p.middle {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+#bar {
+  position: fixed;
+  width: 100%;
+  padding: 0.5em 0;
+  background: #ee352a;
+  z-index: 100;
+}
+
+table tr {
+  float: left;
+}
+
+#logo {
+  color: #fbfae6;
+  font-size: 3.5em;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+
+#m {
+  font-family: 'Vollkorn', Arial, Serif;
+}
+
+#cssmenu {
+  display: inline-block;
+  background: #f96e5b;
+}
+#cssmenu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  display: block;
+  zoom: 1;
+}
+#cssmenu ul:after {
+  content: ' ';
+  display: block;
+  font-size: 0;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+#cssmenu ul li {
+  float: left;
+  display: block;
+  padding: 0;
+}
+#cssmenu ul li a {
+  color: #fbfae6;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  padding: 15px 25px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 14px;
+  position: relative;
+} 
+#cssmenu ul li a:hover {
+  text-decoration: underline;
+}
+#cssmenu ul li a:after {
+  content: '';
+  display: block;
+  position: absolute;
+  right: -3px;
+  top: 19px;
+  height: 6px;
+  width: 6px;
+  background: #ffffff;
+  opacity: .5;
+}
+#cssmenu ul li.last > a:after,
+#cssmenu ul li:last-child > a:after {
+  display: none;
+}
+@media screen and (max-width: 680px) {
+  p {
+    width: auto;
+  }
+
+  #bug {
+      height: 9em;
+  }
+
+  .block>div {
+    width: auto;
+    display: block;
+  }
+
+  table {
+    text-align: center;
+  }
+  
+  table tr {
+    float: none;
+  }
+  
+  #cssmenu ul li {
+    float: none;
+  }
+  #cssmenu ul li a {
+    width: 100%;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  #cssmenu ul li a:after {
+    display: none;
+  }
+  #cssmenu ul li a:before {
+    height: 1px;
+    background: #ffffff;
+    width: 100%;
+    opacity: .2;
+  }
+  #cssmenu ul li.last > a:before,
+  #cssmenu ul li:last-child > a:before {
+    display: none;
+  }
+}
