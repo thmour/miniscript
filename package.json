@@ -1,11 +1,11 @@
 {
   "name": "m.js",
   "preferGlobal": true,
-  "version": "0.1.8",
+  "version": "0.1.10",
   "author": "thmour <mtheofilos@gmail.com>",
   "description": "Minimal dialect of javascript",
   "bin": {
-    "m.js": "./bin/m"
+    "mjs": "./bin/m"
   },
   "repository": {
     "type": "git",
@@ -18,7 +18,6 @@
     "javascript"
   ],
   "dependencies": {
-    "jison": "0.4.13",
     "commander": "2.2.0",
     "lodash": "2.4.1",
     "js-beautify": "1.5.1"
