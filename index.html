@@ -159,9 +159,9 @@
         <pre class="brush: mjs;">
             switch john.likes
 	            case 'basket', 'football'
-		            send_message(john, 'Well done!')
-	            case 'beerpong'
-		            send_message(john, 'That's not a sport')
+		            send_message(john, 'What team you support?')
+	            case 'squash'
+		            send_message(john, 'I don\'t know much about it')
 	            default
 		            send_message(john, 'Whatever...')
             ;
@@ -170,10 +170,10 @@
             switch (john.likes) {
                 case 'basket':
                 case 'football':
-                    send_message(john, 'Well done!');
+                    send_message(john, 'What team you support?');
                     break;
-                case 'beerpong':
-                    send_message(john, 'That's not a sport');
+                case 'squash':
+                    send_message(john, 'I don\'t know much about it');
                     break;
                 default:
                     send_message(john, 'Whatever...');
