@@ -1,7 +1,7 @@
 {
   "name": "m.js",
   "preferGlobal": true,
-  "version": "0.1.10",
+  "version": "0.1.11",
   "author": "thmour <mtheofilos@gmail.com>",
   "description": "Minimal dialect of javascript",
   "bin": {
@@ -25,5 +25,6 @@
   "license": "MIT",
   "engines": {
     "node": ">=0.6"
-  }
+  },
+  "homepage": "http://thmour.github.io/m.js/"
 }

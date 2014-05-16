@@ -44,7 +44,8 @@
 \b"public"\b                          return "PUBLIC"     
 \b"return"\b                          return "RETURN"     
 \b"set"\b                             return "SET" 
-\b"static"\b                          return "STATIC"       
+\b"static"\b                          return "STATIC" 
+\b"super"\b                           return "SUPER"      
 \b"switch"\b                          return "SWITCH"     
 \b"this"\b                            return "THIS"       
 \b"throw"\b                           return "THROW"
@@ -115,6 +116,8 @@ statement : assign
           { $$ = {token: 'return', value: $2} }
           | call
           { $$ = {token: 'execute', value: $1} }
+		  | SUPER fargs
+		  { $$ = {token: 'super', name: '', argument_list: $2} }
 ;
 
 import : IMPORT string as_opt
@@ -125,8 +128,8 @@ as_opt :| AS IDF
         { $$ = $2 }
 ;
 
-class : CLASS CNAME parents_opt constructor_opt static_opt public_opt private_opt ';'
-      { $$ = {token: 'class', name: $2, parent_list: $3, constructor: $4, static_list: $5, public_list: $6, private_list: $7} }
+class : CLASS CNAME parent_opt constructor_opt static_opt public_opt private_opt ';'
+      { $$ = {token: 'class', name: $2, parent: $3, constructor: $4, static_list: $5, public_list: $6, private_list: $7} }
 ;
 
 static_opt :| STATIC mcassign
@@ -150,25 +153,30 @@ mcassign : mcassign cassign
 cassign : IDF '=' bool
         { $$ = [$1,$3] }
         | IDF
-        { $$ = [$1, {token:'null'}] }
+        { $$ = '' }
 ;
 
-constructor_opt : largs_opt body_opt
+constructor_opt : cargs_opt body_opt
                 { $$ = { token: 'constructor', argument_list: $1, body: $2} }
+;
+
+cargs_opt :| cargs_opt ',' carg
+           { $$ = $1.concat($3) }
+           | carg
+           { $$ = [$1] }
+;
+
+carg : IDF
+     | DOT IDF
+     { $$ = { t: $2 } }
 ;
 
 body_opt :| '{' prg '}'
           { $$ = $2 }
 ;
 
-parents_opt :| ':' mCNAME
+parent_opt :| ':' CNAME
              { $$ = $2 }
-;
-
-mCNAME : mCNAME CNAME
-       { $$ = $1.concat($2) }
-       | CNAME
-       { $$ = [$1] }
 ;
 
 lamda : '#' largs_opt '{' prg '}'
