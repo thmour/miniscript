@@ -7,10 +7,9 @@ body {
   margin-bottom: 10em;
   width: 100%;
   height: 100%;
-  background: #fbfae6;
-  color: #ee352a;
-  font-family: 'Inconsolata', Arial, Serif;
-  font-weight: 400;
+  background: #ECF0F1;
+  color: #130F0E;
+  font-family: 'Open Sans';
 }
 
 body * {
@@ -20,7 +19,7 @@ body * {
 
 #bug {
     display: block;
-    height: 5.5em;
+    height: 7em;
 }
 
 .command {
@@ -32,17 +31,17 @@ body * {
     padding: 0.75em;
     border: solid 1px #ddd;
     margin: 1em auto;
-    width: 70%;
+    width: 80%;
 }
 
 .block {
     display: block;
     margin: 1.5em auto;
-    width: 70%;
+    width: 80%;
 }
 
 .block>div {
-    width: 48%;
+    width: 49%;
     display: inline-block;
     vertical-align: top;
     margin: 0;
@@ -50,14 +49,14 @@ body * {
 }
 
 .header {
-  font-weight: bold;
-  text-decoration: underline;
+    font-size: 28px;
+    text-decoration: underline;
 }
 
 p {
-  font-size: 1.5em;
+  font-size: 18px;
   margin: 1.5em auto;
-  width: 70%;
+  width: 80%;
 }
 
 p.middle {
@@ -83,13 +82,14 @@ table tr {
 }
 
 #logo {
-  color: #fbfae6;
+  color: white;
   font-size: 3.5em;
   margin-right: 0.5em;
+  font-family: 'Inconsolata';
 }
 
 #m {
-  font-family: 'Vollkorn', Arial, Serif;
+  font-family: 'Vollkorn';
 }
 
 #cssmenu {
@@ -118,7 +118,7 @@ table tr {
   padding: 0;
 }
 #cssmenu ul li a {
-  color: #fbfae6;
+  color: white;
   text-align: center;
   text-decoration: none;
   display: block;

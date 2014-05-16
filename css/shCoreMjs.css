@@ -56,7 +56,7 @@
   margin: 1em 0 1em 0 !important;
   position: relative !important;
   overflow: auto !important;
-  font-size: 12px !important;
+  font-size: 14px !important;
 }
 .syntaxhighlighter.source {
   overflow: hidden !important;
@@ -224,7 +224,7 @@
 }
 
 .syntaxhighlighter {
-	background: #2c3e50;
+	background: #2C3E50;
 	color: #ecf0f1;
 	padding: 8px 0;
 }
@@ -247,11 +247,11 @@
 }
 
 .syntaxhighlighter .string {
-	color: #2ecc71;
+	color: #86E2D5;
 }
 
 .syntaxhighlighter .cls {
-	color: #f1c40f;
+	color: #F4D03F;
 }
 
 .syntaxhighlighter .this {
@@ -259,7 +259,7 @@
 }
 
 .syntaxhighlighter  .member {
-	color: #95a5a6;
+	color: #D2D7D3;
 }
 
 .syntaxhighlighter .keyword {
@@ -276,5 +276,5 @@
 }
 
 .syntaxhighlighter .keyword_val{
-	color: #ba7fd2;
+	color: #BE90D4;
 }

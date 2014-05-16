@@ -5,7 +5,8 @@
     <title>m.js</title>
     <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
     <link type="text/css" rel="stylesheet" href="css/shCoreMjs.css" />
-    <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body>
     <div id="bar">
@@ -31,7 +32,7 @@
     <span id="bug"></span>
     <p>
         <span class='header'>What?</span><br><br>
-        <b>m.js</b> is a minimal dialect of javascript. It inherits every good part of Python, Ruby and C++. You can compile the code to javascript or run it directly from the console.
+        m.js is a minimal dialect of javascript. It inherits every good part of Python, Ruby and C++. You can compile the code to javascript or run it directly from the console.
     </p>
     <p>
         <span class='header'>Why?</span><br><br>
@@ -39,7 +40,7 @@
     </p>
     <p>
         <span class='header'>Install:</span><br><br>
-        You can install the <b>m.js</b> compiler using the following command:
+        You can install the m.js compiler using the following command:
     </p>
     <p class="command">$ npm install m.js -g</p>
     <p>
@@ -69,6 +70,7 @@
             foo = # bar, baz {
                 print bar, baz
             }
+            &nbsp;
         </pre>
         <pre class="brush: js;">
             var foo;
@@ -102,15 +104,18 @@
         </pre>
     </code>
     <p class="middle">
-        As you saw many things are considered obvious and have been removed from <b>m.js</b> grammar like parentheses and code blocks.<br>
+        As you saw many things are considered obvious and have been removed from m.js grammar like parentheses and code blocks.
         Next stop, assignments:
     </p>
     <code class="block">
         <pre class="brush: mjs;">                     
             x = 5
             y = 6
+
             a, b = [x,y]
+
             a += 5
+
             x = y = a
         </pre>
         <pre class="brush: js;">
@@ -130,6 +135,7 @@
     <code class="block">
         <pre class="brush: mjs;">
             a = 5
+
             if a < 1
                 print 'a is less than 1'
             elif a < 4
@@ -151,8 +157,8 @@
         </pre>
     </code>
     <p class="middle">
-        Only a ';' is required to finish an if statement, the same goes for other statements containing code blocks.<br>
-        About time for a switch statement:
+        Only a ';' is required to finish an if statement, the same goes for other statements containing code blocks.
+        Variables start with lowercase letter while classes start with uppercase one. About time for a switch statement:
     </p>
     <code class="block">
         <pre class="brush: mjs;">
@@ -164,6 +170,9 @@
 	            default
 		            send_message(john, 'Whatever...')
             ;
+            &nbsp;
+            &nbsp;
+            &nbsp;
         </pre>
         <pre class="brush: js;">
             switch (john.likes) {
@@ -180,27 +189,34 @@
         </pre>
     </code>
     <p class="middle">
-        Pretty neat, huh? At least <b>m.js</b> tries to keep it simple and elegant.
+        Pretty neat, huh? At least m.js tries to keep it simple and elegant.
         Now we can check out some for loops:
     </p>
     <code class="block">
         <pre class="brush: mjs;">
             obj = { a=1 b=2 c=3 }
+
             db = [{ user='peter' age=21 },
                   { user='john'  age=32 },
                   { user='ralph' age=27 }]
+
             for i of 1..5
 	            print i
             ;
+
             for key in obj
 	            print key + ':', obj[key]
             ;
+
             String::capitalize = # {
                 return this:0.toUpperCase() + this.slice(1)
             }
+
             for user, age in db
                 print "%user.capitalize() is %{age + 1} years old"
             ;
+            &nbsp;
+            &nbsp;
         </pre>
         <pre class="brush: js;">
             var obj, db, i, key, user, age, _i, _l;
@@ -208,15 +224,19 @@
             db = [{user: 'peter', age: 21},
                   {user: 'john' , age: 32},
                   {user: 'ralph', age: 27}];
+
             for (i = 0; ++i <= 5;) {
                 console.log(i);
             }
+
             for (key in obj) {
                 console.log(key + ':', obj[key]);
             }
+
             String.prototype.capitalize = function() {
                 return this[0].toUpperCase() + this.slice(1);
             };
+
             for (_i = -1, _l = db.length; ++_i < _l;) {
                 user = db[_i].user;
                 age = db[_i].age;
@@ -234,15 +254,19 @@
             class Animal
     	        group, colors, legs
             ;
+
             class Dog : Animal
 	            @name, colors, @breed {
 		            super('mammal', colors, 4)
 	            }
             ;
+
             Dog::pet = # {
 	            print 'wuf wuf!'
             }
+
             my_dog = new Dog('frisky', ['brown', 'white'], 'corgi')
+
             my_dog.pet()    
         </pre>
         <pre class="brush: js;">
@@ -263,6 +287,74 @@
             };
             my_dog = new Dog('frisky', ['brown', 'white'], 'corgi');
             my_dog.pet();
+        </pre>
+    </code>
+    <p class="middle">
+        Right after the class and its name, you can define the constructor with optional arguments and body.
+        Optional body generates "this.member = meber" code and "super" if needed. Then we proceed to class scope:
+    </p>
+    <code class="block">
+        <pre class="brush: mjs;">
+            class Character
+                name, health, attack, defense
+                
+              public
+                getGold = # {
+                    return gold
+                }
+                setGold = # value {
+                    gold = value
+                }
+                levelUp = # {
+                    level++
+                }
+
+              private
+                gold = 0
+                level = 0
+            ;
+
+            Character::lootGold = # amount {
+                print char.gold //undefined
+                @setGold(@getGold() + amount)
+            }
+
+            char = new Character('Vollkorn', 150, 7, 3)
+
+            char.lootGold(50)
+
+            print char.getGold() //50 
+        </pre>
+        <pre class="brush: js;">
+            var char;
+            function Character(name, health, attack, defense) {
+                var gold = 0,
+                    level = 0;
+                this.getGold = function() {
+                    return gold;
+                };
+                this.setGold = function(value) {
+                    gold = value;
+                };
+                this.levelUp = function() {
+                    level++;
+                };
+                this.name = name;
+                this.health = health;
+                this.attack = attack;
+                this.defense = defense;
+            }
+
+            Character.prototype.lootGold = function(amount) {
+                console.log(char.gold);
+                this.setGold(this.getGold() + amount);
+            };
+
+            char = new Character('Vollkorn', 150, 7, 3);
+
+            char.lootGold(50);
+
+            console.log(char.getGold());
         </pre>
     </code>
     <script type="text/javascript" src="scripts/shCore.js"></script>
