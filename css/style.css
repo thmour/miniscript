@@ -24,26 +24,29 @@ body * {
 }
 
 .command {
-    display: inline-block;
+    display: block;
     background: white;
     color: #333;
     font-family: Consolas, "Liberation Mono", Courier, monospace;
     font-size: 14px;
     padding: 0.75em;
     border: solid 1px #ddd;
-    margin-left: 2em;
-    margin-top: 1.5em;
+    margin: 1em auto;
+    width: 70%;
 }
 
 .block {
-    margin: 1.5em;
-    height: 1em;
+    display: block;
+    margin: 1.5em auto;
+    width: 70%;
 }
 
 .block>div {
-    width: 47%;
+    width: 48%;
     display: inline-block;
     vertical-align: top;
+    margin: 0;
+    padding: 0;
 }
 
 .header {
@@ -53,8 +56,8 @@ body * {
 
 p {
   font-size: 1.5em;
-  margin: 1.5em 1.5em 0 1.5em;
-  width: 60%;
+  margin: 1.5em auto;
+  width: 70%;
 }
 
 p.middle {
@@ -70,14 +73,18 @@ p.middle {
   z-index: 100;
 }
 
+#bar table {
+    margin: auto;
+}
+
 table tr {
   float: left;
+  margin: auto;
 }
 
 #logo {
   color: #fbfae6;
   font-size: 3.5em;
-  margin-left: 0.5em;
   margin-right: 0.5em;
 }
 
@@ -142,7 +149,7 @@ table tr {
 }
 @media screen and (max-width: 680px) {
   p {
-    width: auto;
+    width: 80%;
   }
 
   #bug {
@@ -184,4 +191,19 @@ table tr {
   #cssmenu ul li:last-child > a:before {
     display: none;
   }
+}
+
+::-webkit-scrollbar {
+    width: 0.5em;
+    height: 0.5em;
+    background-color: white;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ff685c;
+}
+
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active  {
+    background: #ff887c;
 }

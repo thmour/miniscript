@@ -7,24 +7,26 @@
     <link type="text/css" rel="stylesheet" href="css/shCoreMjs.css" />
 </head>
 <body>
-    <table id="bar">
-        <tr>
-            <td>
-                <span id="logo">
-                    <span id="m">m</span><span>.js</span>
-                </span>
-            </td>
-            <td>
-                <div id='cssmenu'>
-                    <ul>
-                        <li><a href='#'><span>Try</span></a></li>
-                        <li><a href='#'><span>Documentation</span></a></li>
-                        <li class='last'><a href='https://github.com/thmour/m.js' target="_blank"><span>View on Github</span></a></li>
-                    </ul>
-                </div>
-            </td>
-        </tr>
-    </table>
+    <div id="bar">
+        <table>
+            <tr>
+                <td>
+                    <span id="logo">
+                        <span id="m">m</span><span>.js</span>
+                    </span>
+                </td>
+                <td>
+                    <div id='cssmenu'>
+                        <ul>
+                            <li><a href='#'><span>Try</span></a></li>
+                            <li><a href='#'><span>Documentation</span></a></li>
+                            <li class='last'><a href='https://github.com/thmour/m.js' target="_blank"><span>View on Github</span></a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
     <span id="bug"></span>
     <p>
         <span class='header'>What?</span><br><br>
@@ -105,13 +107,9 @@
     <code class="block">
         <pre class="brush: mjs;">                     
             x = 5
-
             y = 6
-
             a, b = [x,y]
-
             a += 5
-
             x = y = a
         </pre>
         <pre class="brush: js;">
@@ -187,40 +185,37 @@
     <code class="block">
         <pre class="brush: mjs;">
             obj = { a=1 b=2 c=3 }
-            db = [{ user='peter' age=21 }, { user='john' age=32 }, { user='ralph' age=27 }]
-
+            db = [{ user='peter' age=21 },
+                  { user='john'  age=32 },
+                  { user='ralph' age=27 }]
             for i of 1..5
 	            print i
             ;
-
             for key in obj
 	            print key + ':', obj[key]
             ;
-
             String::capitalize = # {
                 return this:0.toUpperCase() + this.slice(1)
             }
-
             for user, age in db
-                print "%user.capitalize() is %{age + 1} years old" //Don't tell anyone!
+                print "%user.capitalize() is %{age + 1} years old"
             ;
         </pre>
         <pre class="brush: js;">
             var obj, db, i, key, user, age, _i, _l;
             obj = { a: 1, b: 2, c: 3 };
-            db = [{user: 'peter', age: 21}, {user: 'john', age: 32}, {user: 'ralph', age: 27}];
+            db = [{user: 'peter', age: 21},
+                  {user: 'john' , age: 32},
+                  {user: 'ralph', age: 27}];
             for (i = 0; ++i <= 5;) {
                 console.log(i);
             }
-
             for (key in obj) {
                 console.log(key + ':', obj[key]);
             }
-
             String.prototype.capitalize = function() {
                 return this[0].toUpperCase() + this.slice(1);
             };
-
             for (_i = -1, _l = db.length; ++_i < _l;) {
                 user = db[_i].user;
                 age = db[_i].age;
@@ -230,25 +225,22 @@
     </code>
     <p class="middle">
         You see that the for in behaves different when there are more than one iterators.
-        This is more useful than splitting every member of an object into 2 variables.<br>
-        How about classes?
+        This is more useful than splitting every member of an object into 2 variables. 
+        Now we proceed to classes. Here is the first example:
     </p>
     <code class="block">
         <pre class="brush: mjs;">
             class Animal
     	        group, colors, legs
             ;
-
             class Dog : Animal
 	            @name, colors, @breed {
 		            super('mammal', colors, 4)
 	            }
             ;
-
             Dog::pet = # {
 	            print 'wuf wuf!'
             }
-
             my_dog = new Dog('frisky', ['brown', 'white'], 'corgi')
             my_dog.pet()    
         </pre>
