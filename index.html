@@ -161,7 +161,7 @@
 	            case 'basket', 'football'
 		            send_message(john, 'Well done!')
 	            case 'beerpong'
-		            send_message(john, 'Get a life')
+		            send_message(john, 'That's not a sport')
 	            default
 		            send_message(john, 'Whatever...')
             ;
@@ -173,7 +173,7 @@
                     send_message(john, 'Well done!');
                     break;
                 case 'beerpong':
-                    send_message(john, 'Get a life');
+                    send_message(john, 'That's not a sport');
                     break;
                 default:
                     send_message(john, 'Whatever...');
@@ -231,7 +231,47 @@
     <p class="middle">
         You see that the for in behaves different when there are more than one iterators.
         This is more useful than splitting every member of an object into 2 variables.<br>
+        How about classes?
     </p>
+    <code class="block">
+        <pre class="brush: mjs;">
+            class Animal
+    	        group, colors, legs
+            ;
+
+            class Dog : Animal
+	            @name, colors, @breed {
+		            super('mammal', colors, 4)
+	            }
+            ;
+
+            Dog::pet = # {
+	            print 'wuf wuf!'
+            }
+
+            my_dog = new Dog('frisky', ['brown', 'white'], 'corgi')
+            my_dog.pet()    
+        </pre>
+        <pre class="brush: js;">
+            var my_dog;
+            function Animal(group, colors, legs) {
+                this.group = group;
+                this.colors = colors;
+                this.legs = legs;
+            }
+            function Dog(name, colors, breed) {
+                Animal.call(this, 'mammal', colors, 4);
+                this.name = name;
+                this.breed = breed;
+            }
+            Dog.prototype = Object.create(Animal.prototype);
+            Dog.prototype.pet = function() {
+                console.log('wuf wuf!');
+            };
+            my_dog = new Dog('frisky', ['brown', 'white'], 'corgi');
+            my_dog.pet();
+        </pre>
+    </code>
     <script type="text/javascript" src="scripts/shCore.js"></script>
     <script type="text/javascript" src="scripts/shBrushMjs.js"></script>
     <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
