@@ -11,7 +11,7 @@
 							
 		var keywords_class = 'static public private';
 		
-		var keywords_op = 'as in of is and or not instanceof import print throw return exit new';
+		var keywords_op = 'as in of is and or not instanceof import print throw return exit new super';
 		
 		var keywords_val = 'null undefined Infinity NaN this true false';
 
