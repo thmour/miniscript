@@ -315,7 +315,11 @@
             ;
 
             Character::lootGold = # amount {
-                print gold //undefined
+                try
+                    print gold
+                catch err
+                    print err.message //gold is not defined
+                ;
                 @setGold(@getGold() + amount)
             }
 
@@ -346,7 +350,11 @@
             }
 
             Character.prototype.lootGold = function(amount) {
-                console.log(gold);
+                try {
+                    console.log(gold);
+                } catch (err) {
+                    console.log(err.message);
+                }
                 this.setGold(this.getGold() + amount);
             };
 
