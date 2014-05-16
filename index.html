@@ -315,7 +315,7 @@
             ;
 
             Character::lootGold = # amount {
-                print char.gold //undefined
+                print gold //undefined
                 @setGold(@getGold() + amount)
             }
 
@@ -346,7 +346,7 @@
             }
 
             Character.prototype.lootGold = function(amount) {
-                console.log(char.gold);
+                console.log(gold);
                 this.setGold(this.getGold() + amount);
             };
 
