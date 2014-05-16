@@ -24,7 +24,6 @@
 			{ regex: /\s;|#|{|}/g, css: 'keyword' },
 			{ regex: /@?@[$_a-zA-Z0-9]+/g, css: 'this'},
 			{ regex: /\.[$_a-zA-Z][$_a-zA-Z0-9]*/g, css: 'member' },
-			{ regex: /\b[A-Z][$_a-zA-Z0-9]*/g, css: 'cls' },
 			{ regex: new RegExp(this.getKeywords(keywords_main), 'gm'), css: 'keyword' },
 			{ regex: new RegExp(this.getKeywords(keywords_class), 'gm'), css: 'keyword_class' },
 			{ regex: new RegExp(this.getKeywords(keywords_op), 'gm'), css: 'keyword_op' },
