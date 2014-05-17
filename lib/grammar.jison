@@ -88,7 +88,7 @@
 %start S
 %%
 
-S : prg EOF 
+S : prg EOF
   { return $1 }
   | '`' bool EOF
   { return $2 }
@@ -116,8 +116,8 @@ statement : assign
           { $$ = {token: 'return', value: $2} }
           | call
           { $$ = {token: 'execute', value: $1} }
-		  | SUPER fargs
-		  { $$ = {token: 'super', name: '', argument_list: $2} }
+          | SUPER fargs
+          { $$ = {token: 'super', name: '', argument_list: $2} }
 ;
 
 import : IMPORT string as_opt
@@ -132,11 +132,11 @@ class : CLASS CNAME parent_opt constructor_opt static_opt public_opt private_opt
       { $$ = {token: 'class', name: $2, parent: $3, constructor: $4, static_list: $5, public_list: $6, private_list: $7} }
 ;
 
-static_opt :| STATIC mcassign
+static_opt :| STATIC massign
             { $$ = $2 }
 ;
 
-public_opt :| PUBLIC mcassign
+public_opt :| PUBLIC massign
             { $$ = $2 }
 ;
 
@@ -150,10 +150,18 @@ mcassign : mcassign cassign
          { $$ = [$1]}
 ;
 
-cassign : IDF '=' bool
-        { $$ = [$1,$3] }
-        | IDF
-        { $$ = '' }
+cassign : IDF '=' bool set_opt get_opt
+        { $$ = [$1,$3,$4,$5] }
+;
+
+set_opt:| SET
+        | SET '{' IDF ':' bool '}'
+        { $$ = [$3,$5] }
+;
+
+get_opt:| GET
+        | GET '{' bool '}'
+        { $$ = [$3] }
 ;
 
 constructor_opt : cargs_opt body_opt
@@ -171,18 +179,21 @@ carg : IDF
      { $$ = { t: $2 } }
 ;
 
-body_opt :| '{' prg '}'
-          { $$ = $2 }
-;
-
 parent_opt :| ':' CNAME
              { $$ = $2 }
 ;
 
-lamda : '#' largs_opt '{' prg '}'
-      { $$ = {token: 'function', argument_list: $2, body: $4} }
-      | '#' IDF ':' largs_opt '{' prg '}'
-      { $$ = {token: 'function', name: $2, argument_list: $4, body: $6} }
+lamda : '#' largs_opt body
+      { $$ = {token: 'function', argument_list: $2, body: $3} }
+      | '#' IDF ':' largs_opt body
+      { $$ = {token: 'function', name: $2, argument_list: $4, body: $5} }
+;
+
+body : '{' prg '}'
+     { $$ = $2 }
+;
+
+body_opt :| body
 ;
 
 largs_opt :| largs_opt ',' IDF
@@ -192,9 +203,9 @@ largs_opt :| largs_opt ',' IDF
 ;
 
 assign : call '=' bool
-       { $$ = {token: 'assign_single', variable: $1, value: $3, operator: '=' } }
+       { $$ = {token: 'assign_single', variable: $1, value: $3 } }
        | left_assign '=' bool
-       { $$ = {token: 'assign_mult', variable_list: $1, value: $3, operator: '=' } }
+       { $$ = {token: 'assign_mult', variable_list: $1, value: $3 } }
        | call ASOP bool
        { $$ = { token: 'assign_operator', variable: $1, operator: $2, value: $3} }
        | call plusplus
