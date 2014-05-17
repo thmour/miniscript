@@ -299,18 +299,12 @@
                 name, health, attack, defense
                 
               public
-                getGold = # {
-                    return gold
-                }
-                setGold = # value {
-                    gold = value
-                }
                 levelUp = # {
                     level++
                 }
 
               private
-                gold = 0
+                gold = 0 set get
                 level = 0
             ;
 
@@ -328,27 +322,28 @@
             char.lootGold(50)
 
             print char.getGold() //50 
+            &nbsp;
+            &nbsp;
         </pre>
         <pre class="brush: js;">
             var char;
             function Character(name, health, attack, defense) {
                 var gold = 0,
                     level = 0;
-                this.getGold = function() {
-                    return gold;
-                };
-                this.setGold = function(value) {
-                    gold = value;
-                };
                 this.levelUp = function() {
                     level++;
+                };
+                this.setGold = function(_value) {
+                    gold = _value;
+                };
+                this.getGold = function() {
+                    return gold;
                 };
                 this.name = name;
                 this.health = health;
                 this.attack = attack;
                 this.defense = defense;
             }
-
             Character.prototype.lootGold = function(amount) {
                 try {
                     console.log(gold);
@@ -357,14 +352,16 @@
                 }
                 this.setGold(this.getGold() + amount);
             };
-
             char = new Character('Vollkorn', 150, 7, 3);
-
             char.lootGold(50);
-
             console.log(char.getGold());
         </pre>
     </code>
+    <p class="middle">
+        To sum up, public functions can access local members and vice versa, while prototype functions can acess only the public members.
+        The order which everything is written is strict, you can't define private members before the public ones.
+        You can also define public static members by writing "static" before the "public" keyword. Private members can have setters and getters.
+    </p>
     <script type="text/javascript" src="scripts/shCore.js"></script>
     <script type="text/javascript" src="scripts/shBrushMjs.js"></script>
     <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
