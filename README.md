@@ -6,4 +6,7 @@ Install:
 $ npm install m.js -g
 ```
 
-v0.1.11 stable build, working on github page + documentation
+working on github page + documentation
+
+v0.1.12 (17/5/2014)
+	set get on private members
