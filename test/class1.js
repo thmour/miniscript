@@ -12,9 +12,7 @@ function Animal(group, colors, legs) {
     this.legs = legs;
 }
 
-function Dog(group, colors, legs, name, colors, breed) {
-    this.name = name;
-    this.breed = breed;
+function Dog(name, colors, breed) {
     Animal.call(this, 'mammal', colors, 4);
 }
 _utils.extend(Dog, Animal);
