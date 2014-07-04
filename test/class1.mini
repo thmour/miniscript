@@ -1,0 +1,13 @@
+class Animal { group, colors, legs }
+
+class Dog : Animal (@name, colors, @breed)
+	super 'mammal', colors, 4
+;
+
+Dog::pet = # {
+	print 'wuf wuf!'
+}
+
+my_dog = new Dog('frisky', ['brown', 'white'], 'corgi')
+
+my_dog.pet()    

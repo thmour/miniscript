@@ -1,0 +1,55 @@
+#!/usr/bin/env node
+
+var path = require('path'),
+    fs   = require('fs')
+	jsb  = require('js-beautify').js_beautify,
+	lib  = path.join(path.dirname(fs.realpathSync(__filename)), '../lib/'),
+	compiler = require(lib + 'compiler.js');
+
+var args = process.argv.slice(2);
+
+    if(args[0] === '-h' || args[0] === '-help' || args[0] === '--help' || args[0] === '--h') {
+	    console.log('\n    M.js version:', require('../package.json').version, '\n');
+		console.log('     *  -h --help:', 'You found out', '\n');
+		console.log('     *  -v --version:', 'Displays the above version', '\n');
+		console.log('     *  run filename[.mini]:', 'Compiles and runs the file input', '\n');
+		console.log('     *  out inputname[.mini] [outputname[.js]]:', 'Compiles the input, writes to ouput file.');
+		console.log('If the output name is omitted the input name is used');
+	} else if(args[0] === '-version' || args[0] === '-v' || args[0] === '--version' || args[0] === '--v') {
+		console.log('M.js version:', require('../package.json').version);
+	} else if(args[0] === 'run') {
+		var fn = args[1];
+		
+		if(!path.extname(fn)) fn += '.mini';
+		
+		if(fs.existsSync(fn)) {
+			eval(compiler.compile(fs.readFileSync(fn).toString()));
+		} else {
+			console.log('File input does not exist');
+		}
+	} else if(args[0] == 'out') {
+	    var src = args[1], out = args[2];
+		
+		if(!path.extname(src)) src += '.mini';
+		
+		if(fs.existsSync(src)) {
+			var src_text = fs.readFileSync(src).toString();
+			var out_text = compiler.compile(src_text);
+			if(!out) out = src.replace(/\.mini|\.txt/, '.js');
+			else if(!path.extname(out)) out += '.js';
+			fs.writeFileSync(out, jsb(out_text));
+		} else {
+			console.log('File input does not exist');
+		}
+	} else {
+		//run by default
+		var fn = args[0];
+		
+		if(!path.extname(fn)) fn += '.mini';
+		
+		if(fs.existsSync(fn)) {
+			eval(compiler.compile(fs.readFileSync(fn).toString()));
+		} else {
+			console.log('File input does not exist');
+		}
+	}

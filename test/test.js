@@ -1,46 +1,34 @@
-var stack;
+var s;
 
-function List(value, next) {
-    this.value = value;
-    this.next = next;
-}
+function Node(value, next) {}
 
 function Stack() {
-    var arg, _i, _l;
-    var stack = null;
-    this.size = 0;
-    this.getHead = function() {
+    var stack, head;
+    stack = new Node(null, null);
+    head = null;
+    this.__defineGetter__("head", function() {
         return stack.value;
-    };
+    });
     this.push = function(value) {
-        if (this.size < Stack.max_size) {
-            stack = new List(value, stack);
-            this.size++;
+        var v, _i, _l;
+        if (value instanceof Array) {
+            for (_i = -1, _l = value.length; ++_i < _l;) {
+                v = value[_i];
+                stack = new Node(v, stack);
+            }
         } else {
-            throw new Error("Stack is full, can't push");
+            stack = new Node(value, stack);
         }
     };
     this.pop = function() {
         var temp;
-        if (this.size > 0) {
+        if (stack.value) {
             temp = stack.value;
             stack = stack.next;
-            this.size--;
             return temp;
-        } else {
-            throw new Error("Stack is empty, can't pop");
         }
     };
-    for (_i = -1, _l = arguments.length; ++_i < _l;) {
-        arg = arguments[_i];
-        this.push(arg);
-    }
 }
-Stack.max_size = 5;
-stack = new Stack(1, 2, 3, 4, 5);
-try {
-    stack.push(6);
-} catch (error) {
-    console.log(error.message);
-}
-console.log(stack.getHead());
+s = new Stack();
+s.push([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+console.log(s.head);

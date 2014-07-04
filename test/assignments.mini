@@ -1,0 +1,10 @@
+x = 5
+
+foo = # {
+	return 'maria', 21
+}
+
+name, age = foo()
+
+y = x = 5
+x = 5 + (y = 6)

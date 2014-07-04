@@ -1,0 +1,31 @@
+class Node {value, next}
+
+class Stack
+    stack = new Node(null, null)
+    head:null has get {return stack.value}
+   
+    @push = # value {
+		if value instanceof Array
+            for v of value
+		       stack = new Node(v, stack)
+			;
+		else
+		   stack = new Node(value, stack)
+		;
+    }
+   
+    @pop = # {
+        if stack.value
+	       temp = stack.value
+		   stack = stack.next
+		   
+		   return temp
+	    ;
+	}
+;
+
+s = new Stack
+
+s.push(1..10)
+
+print s.head
