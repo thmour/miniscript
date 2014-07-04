@@ -84,11 +84,7 @@ table tr {
 #logo {
   color: white;
   font-size: 3.5em;
-  margin-right: 0.5em;
-  font-family: 'Inconsolata';
-}
-
-#m {
+  margin-right: 1em;
   font-family: 'Vollkorn';
 }
 
