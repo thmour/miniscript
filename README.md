@@ -6,6 +6,8 @@ Install:
 $ npm install miniscript -g
 ```
 
+Under development until v.1.0.0
+
 ### v0.3.0 expected
 1. Select beautified-minified js output
 2. Miniscript on web
