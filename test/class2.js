@@ -1,6 +1,6 @@
 var _utils = {
     extend: function(child, parent) {
-        child.prototype = parent.prototype;
+        child.prototype = Object.create(parent.prototype);
         child.prototype.constructor = child;
     }
 };
@@ -11,7 +11,7 @@ function Point(x, y) {
 }
 
 function Point3(x, y, z) {
-    Point.apply(this, [].slice.call(arguments, 0, 2));
+    Point.call(this, x, y);
     this.z = z;
 }
 _utils.extend(Point3, Point);
