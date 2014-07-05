@@ -1,0 +1,15 @@
+foo = # x, y {
+  print x, y
+}
+
+foo(1, 6)
+
+print # x {
+  return {val: x + 2}
+}(3).val
+
+args = # {
+  return [].slice.call(arguments)
+}
+
+print args(1, 2, 3) + \n + 1.toString()

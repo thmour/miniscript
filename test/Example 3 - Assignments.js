@@ -1,0 +1,12 @@
+var x, y, z, a, b, c, d, f;
+x = 5;
+console.log(x);
+y = [1, 2, [3, 4]];
+z = [1, 2, [3, 4]];
+console.log(y, z);
+a = b = c = 5 + (d = f = 1);
+console.log(a, b, c, d, f);
+_c = [d, a];
+a = _c[0];
+d = _c[1];
+console.log(a, d);
