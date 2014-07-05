@@ -81,7 +81,7 @@
     </code>
     <p class="middle">
         foo is the name of the function, and it can be used inside it to achieve recursion.
-        As you saw many things are considered obvious and have been removed from miniscript syntax like parentheses and code blocks.
+        As you saw many things are considered obvious and have been removed from the miniscript syntax like parentheses and code blocks.
         Next stop, assignments:
     </p>
     <code class="block">
@@ -111,7 +111,7 @@
         </pre>
     </code>
     <p class="middle">
-        This is what you can only do with asignments (for now).
+        This is what you can only do with assignments (for now).
         If you want to make an assignment when the compiler expects a value, wrap it inside parentheses.
         Let's continue with a full if statement:
     </p>
@@ -141,7 +141,7 @@
     </code>
     <p class="middle">
         Only a ';' is required to finish an if statement, the same goes for other statements containing code blocks.
-        Variables start with lowercase letter while classes start with uppercase one. About time for a switch statement:
+        Variables start with a lowercase letter while classes start with uppercase one. About time for a switch statement:
     </p>
     <code class="block">
         <pre class="brush: mini;">
@@ -275,7 +275,7 @@
     </code>
     <p class="middle">
         Right after the class and its name, you can define either an object or a function.
-        Optional body generates "this.member = meber" code and "super" if needed. One more example:
+        Optional body generates "this.member = member" code and "super" if needed. One more example:
     </p>
     <code class="block">
         <pre class="brush: mini;">
@@ -293,15 +293,25 @@
             //x:2, y:3, z:4
             &nbsp;
             &nbsp;
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            &nbsp;
         </pre>
         <pre class="brush: js;">
+            var _utils = {
+                extend: function(child, parent) {
+                    child.prototype = Object.create(parent.prototype);
+                    child.prototype.constructor = child;
+                }
+            };
             function Point(x, y) {
                 this.x = x;
                 this.y = y;
             }
             function Point3(x, y, z) {
-                //the below line will change in future update to .call(this, x, y)
-                Point.apply(this, [].slice.call(arguments, 0, 2));
+                Point.call(this, x, y);
                 this.z = z;
             }
             _utils.extend(Point3, Point);
@@ -313,7 +323,7 @@
     </code>
     <p class="middle">
         As you see there are 2 types of declaring classes, one with object notation and the other with function constructor.
-        Utils is a library that provides some basic scripts to save some space of the output file.
+        Utils is a library that provides some basic scripts to save some space of the output file avoiding unnecessary repetitions.
     </p>
     <script type="text/javascript" src="scripts/shCore.js"></script>
     <script type="text/javascript" src="scripts/shBrushMini.js"></script>
