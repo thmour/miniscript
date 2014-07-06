@@ -10,9 +10,8 @@ Under development until v.1.0.0
 
 ### v0.3.0 expected
 1. Select beautified-minified js output
-2. Miniscript on web
-3. Js project migration
-4. Function arguments (default values, selective calls)
+2. Miniscript on web (on progress)
+3. ...
 
 ### v0.2.0 (3/7/2014)
 1. Grammar redesign
