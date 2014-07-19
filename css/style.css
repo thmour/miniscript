@@ -88,6 +88,11 @@ table tr {
   font-family: 'Vollkorn';
 }
 
+code a {
+    text-decoration: none;
+    color: inherit;
+}
+
 #cssmenu {
   display: inline-block;
   background: #f96e5b;

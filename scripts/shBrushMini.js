@@ -35,6 +35,8 @@
 
 	Brush.prototype	= new SyntaxHighlighter.Highlighter();
 	Brush.aliases	= ['mini'];
+	
+	
 
 	SyntaxHighlighter.brushes.Mini = Brush;
 

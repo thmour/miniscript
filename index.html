@@ -324,7 +324,36 @@
     <p class="middle">
         As you see there are 2 types of declaring classes, one with object notation and the other with function constructor.
         Utils is a library that provides some basic scripts to save some space of the output file avoiding unnecessary repetitions.
+        Let's see how we can deploy a basic http server using Node.js:
     </p>
+    <code class="block">
+        <pre class="brush: mini;">
+            import http
+            import fs.readFileSync as read
+
+            index = read('index.html').toString()
+
+            http.createServer(# req, res {
+              res.writeHead(200, {'Content-Type': 'text/html'})
+              res.end(index)
+            }).listen(1337, '127.0.0.1')
+
+            print 'Server running at http://127.0.0.1:1337/'
+        </pre>
+        <pre class="brush: js;">
+            var index;
+            var http = require('http');
+            var read = require('fs').readFileSync;
+            index = read('index.html').toString();
+            http.createServer(function(req, res) {
+                res.writeHead(200, {
+                    'Content-Type': 'text/html'
+                });
+                res.end(index);
+            }).listen(1337, '127.0.0.1');
+            console.log('Server running at http://127.0.0.1:1337/');
+        </pre>
+    </code>
     <script type="text/javascript" src="scripts/shCore.js"></script>
     <script type="text/javascript" src="scripts/shBrushMini.js"></script>
     <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
