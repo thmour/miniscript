@@ -9,8 +9,8 @@ $ npm install miniscript -g
 Under development until v.1.0.0
 
 ### v0.3.0 expected
-1. Select beautified-minified js output
-2. Miniscript on web (on progress)
+1. ~~Miniscript on web~~
+2. Remove js-beautifier dependency
 3. ...
 
 ### v0.2.0 (3/7/2014)
