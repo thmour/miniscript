@@ -7,6 +7,63 @@
     <link type="text/css" rel="stylesheet" href="css/shCoreMini.css" />
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script>
+        function toggle_editor() {
+            if (editor.style.display == '' || editor.style.display == 'none') {
+                editor.style.display = 'block';
+            } else {
+                editor.style.display = 'none';
+            }
+        }
+
+        function debounce(func, wait) {
+            var timeout;
+            return function () {
+                var context = this, args = arguments;
+                clearTimeout(timeout);
+                timeout = setTimeout(function () {
+                    timeout = null;
+                    func.apply(context, args);
+                }, wait);
+            };
+        };
+
+        window.onload = function () {
+            input.onkeyup = debounce(function () {
+                var result = mini(input.value);
+                if (result != null) {
+                    output.value = js_beautify(result);
+                }
+            }, 150);
+            
+            document.body.onclick = function (e) {
+                if(e.target != input && e.target != output && e.target != run && e.target != trybtn)
+                    editor.style.display = 'none';
+            }
+
+            run.onclick = function () {
+                eval(output.value);
+            }
+
+            input.addEventListener('keydown', function (e) {
+                if (e.keyCode === 9) {
+                    var start = this.selectionStart;
+                    var end = this.selectionEnd;
+
+                    var target = e.target;
+                    var value = target.value;
+
+                    if (start == end) {
+                        target.value = value.substring(0, start) + '    ' + value.substring(end);
+                    } else {
+                        target.value = value.substring(0, start) + '    ' + value.substring(start, end).replace(/\n/g, '\n    ') + value.substring(end);
+                    }
+                    this.selectionStart = this.selectionEnd = start + 4;
+                    e.preventDefault();
+                }
+            }, false);
+        }
+    </script>
 </head>
 <body>
     <div id="bar">
@@ -20,9 +77,9 @@
                 <td>
                     <div id='cssmenu'>
                         <ul>
-                            <li><a href='#'><span>Try</span></a></li>
-                            <li><a href='#'><span>Documentation</span></a></li>
-                            <li class='last'><a href='https://github.com/thmour/miniscript' target="_blank"><span>View on Github</span></a></li>
+                            <li><a id="trybtn" href='#' onclick="toggle_editor(); return false;">Try</a></li>
+                            <!--li><a href='#'><span>Documentation</span></a></li-->
+                            <li class='last'><a href='https://github.com/thmour/miniscript' target="_blank">View on Github</a></li>
                         </ul>
                     </div>
                 </td>
@@ -30,6 +87,11 @@
         </table>
     </div>
     <span id="bug"></span>
+    <div id="editor">
+        <button id="run">run</button>
+        <textarea id="input" rows="20" placeholder="Insert miniscript code here."></textarea>
+        <textarea id="output" rows="20" placeholder="Type on the left side and wait to see the js result!"></textarea>
+    </div>
     <p>
         <span class='header'>What?</span><br><br>
         miniscript is a minimal dialect of javascript. It inherits every good part of Python, Ruby and C++. You can compile the code to javascript or run it directly from the console.
@@ -48,7 +110,7 @@
     </p>
     <p class="command">
         $ mini [run] myscript[.mini]<br>
-        $ mini  out  myscript[.mini] [output_name[.mini]]
+        $ mini  out  myscript[.mini] [output_name[.js]]
     </p>
     <p class="middle">
         <span class='header'>Let's begin!</span><br><br>
@@ -91,10 +153,10 @@
             foo = # {
                 return 'maria', 21
             }
-
             name, age = foo()
 
             y = x = 5
+
             x = x + (y = 6)
         </pre>
         <pre class="brush: js;">
@@ -229,7 +291,7 @@
     </code>
     <p class="middle">
         You see that the for in behaves different when there are more than one iterators.
-        This is more useful than splitting every member of an object into 2 variables. 
+        This is more useful than splitting every member of an object into 2 variables.
         You can also avoid the "[]" on the first level of the assignment.
         Now we proceed to classes. Here is the first example:
     </p>
@@ -354,9 +416,35 @@
             console.log('Server running at http://127.0.0.1:1337/');
         </pre>
     </code>
+    <p class="middle">
+        On the web import works asynchronously and its syntax differs from the commonjs one
+    </p>
+    <code class="block">
+        <pre class="brush: mini;">
+            jQuery = 'https://code.jquery.com/jquery-2.1.1.min.js'
+            mylib  = './mylib.js'
+
+            import jQuery, mylib
+                $('body').html('Hello world')
+            ; 
+        </pre>
+        <pre class="brush: js;">
+            var jQuery, mylib;
+            jQuery = 'https://code.jquery.com/jquery-2.1.1.min.js';
+            mylib = './mylib.js';
+            require([jQuery, mylib], function() {
+                $('body').html('Hello world');
+            });
+        </pre>
+    </code>
+    <p class="middle">
+        When every library is loaded, the codeblock will be executed and it will set the innerHTML of the body element to hello world
+    </p>
     <script type="text/javascript" src="scripts/shCore.js"></script>
     <script type="text/javascript" src="scripts/shBrushMini.js"></script>
     <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+    <script type="text/javascript" src="scripts/js_beautifier.js"></script>
+    <script type="text/javascript" src="scripts/web-miniscript-min.js"></script>
     <script type="text/javascript">SyntaxHighlighter.all();</script>
 </body>
 </html>
