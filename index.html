@@ -29,7 +29,7 @@
         };
 
         window.onload = function () {
-            input.onkeyup = debounce(function () {
+            input.onkeyup = input.onpaste = debounce(function () {
                 var result = mini(input.value);
                 if (result != null) {
                     output.value = js_beautify(result);
