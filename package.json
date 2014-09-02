@@ -1,7 +1,7 @@
 {
   "name": "miniscript",
   "preferGlobal": true,
-  "version": "0.2.15",
+  "version": "0.3.0",
   "author": "thmour <mtheofilos@gmail.com>",
   "description": "Minimal dialect of javascript",
   "bin": {
@@ -18,9 +18,6 @@
     "compiler",
     "javascript"
   ],
-  "dependencies": {
-      "js-beautify": "1.5.1"
-  },
   "license": "MIT",
   "engines": {
     "node": ">=0.6"

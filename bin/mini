@@ -1,10 +1,8 @@
 #!/usr/bin/env node
 
 var path = require('path'),
-    fs   = require('fs')
-	jsb  = require('js-beautify').js_beautify,
-	lib  = path.join(path.dirname(fs.realpathSync(__filename)), '../lib/'),
-	compiler = require(lib + 'compiler.js');
+    fs   = require('fs'),
+	compiler = require('../lib/compiler.js');
 
 var args = process.argv.slice(2);
 
@@ -25,7 +23,7 @@ var args = process.argv.slice(2);
 		if(fs.existsSync(fn)) {
 			eval(compiler.compile(fs.readFileSync(fn).toString()));
 		} else {
-			console.log('File input does not exist');
+			console.log('Read Error: File input does not exist');
 		}
 	} else if(args[0] == 'out') {
 	    var src = args[1], out = args[2];
@@ -37,9 +35,9 @@ var args = process.argv.slice(2);
 			var out_text = compiler.compile(src_text);
 			if(!out) out = src.replace(/\.mini|\.txt/, '.js');
 			else if(!path.extname(out)) out += '.js';
-			fs.writeFileSync(out, jsb(out_text));
+			fs.writeFileSync(out, out_text);
 		} else {
-			console.log('File input does not exist');
+			console.log('Read Error: File input does not exist');
 		}
 	} else {
 		//run by default
@@ -50,6 +48,6 @@ var args = process.argv.slice(2);
 		if(fs.existsSync(fn)) {
 			eval(compiler.compile(fs.readFileSync(fn).toString()));
 		} else {
-			console.log('File input does not exist');
+			console.log('Read Error: File input does not exist');
 		}
 	}

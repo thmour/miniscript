@@ -1,17 +1,48 @@
 miniscript
 ====
 
+Miniscript is a compiler that translates its code to Javascript.
+It makes coding faster and easier by following the DRY principle.
+The miniscript code is smaller than the equivalent javascript and as fast as it.
+
 Install:
 ```shell
 $ npm install miniscript -g
 ```
+Example:
+```js
+fib = # num {
+    if num == 0 or num == 1
+        return num
+    else
+        return fib(num-1) + fib(num-2)
+    ;
+}
 
-Under development until v.1.0.0
+print fib(5)
+```
+```js
+var fib;
+fib = function(num) {
+    if (num == 0 || num == 1) {
+        return num;
+    } else {
+        return fib(num - 1) + fib(num - 2);
+    }
+};
+console.log(fib(5));
+```
 
-### v0.3.0 expected
-1. ~~Miniscript on web~~
-2. Remove js-beautifier dependency
+##Under development until v.1.0.0
+
+### v0.4.0 expected
+1. Smarter compiler
+2. More functionality
 3. ...
+
+### v0.3.0 (2/9/2014)
+1. Miniscript web compiler
+2. No dependencies
 
 ### v0.2.0 (3/7/2014)
 1. Grammar redesign
