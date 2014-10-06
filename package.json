@@ -1,7 +1,7 @@
 {
   "name": "miniscript",
   "preferGlobal": true,
-  "version": "0.3.0",
+  "version": "0.3.2",
   "author": "thmour <mtheofilos@gmail.com>",
   "description": "Minimal dialect of javascript",
   "bin": {
