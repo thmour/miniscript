@@ -10,13 +10,13 @@ Install:
 $ npm install miniscript -g
 ```
 Example:
-```js
-fib = # num {
-    if num == 0 or num == 1
+```
+fib = (num) {
+    if num is 0 || num is 1
         return num
     else
         return fib(num-1) + fib(num-2)
-    ;
+    end
 }
 
 print fib(5)
@@ -35,10 +35,10 @@ console.log(fib(5));
 
 ##Under development until v.1.0.0
 
-### v0.4.0 expected
-1. Smarter compiler
-2. More functionality
-3. ...
+### v0.4.0 (17/12/2014)
+1. More functionality
+2. New syntax (will never change from now on)
+3. 
 
 ### v0.3.0 (2/9/2014)
 1. Miniscript web compiler

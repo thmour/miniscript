@@ -1,13 +1,13 @@
 {
   "name": "miniscript",
   "preferGlobal": true,
-  "version": "0.3.2",
+  "version": "0.4.0",
   "author": "thmour <mtheofilos@gmail.com>",
   "description": "Minimal dialect of javascript",
   "bin": {
     "mini": "./bin/mini"
   },
-  "main": "./lib/compiler.js",
+  "main": "./lib/mini",
   "repository": {
     "type": "git",
     "url": "https://github.com/thmour/miniscript.git"
@@ -20,7 +20,7 @@
   ],
   "license": "MIT",
   "engines": {
-    "node": ">=0.6"
+    "node": ">=0.8"
   },
   "homepage": "http://thmour.github.io/miniscript/"
 }

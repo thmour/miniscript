@@ -1,53 +1,179 @@
 #!/usr/bin/env node
 
-var path = require('path'),
-    fs   = require('fs'),
-	compiler = require('../lib/compiler.js');
+function _eval(code) {
+	return global._ = eval(code);
+}
 
-var args = process.argv.slice(2);
+(function() {
+	var util    = require('util'),
+		path    = require('path'),
+	    fs      = require('fs'),
+		mini    = require('../lib/mini.js');
 
-    if(args[0] === '-h' || args[0] === '-help' || args[0] === '--help' || args[0] === '--h') {
-	    console.log('\n    M.js version:', require('../package.json').version, '\n');
-		console.log('     *  -h --help:', 'You found out', '\n');
-		console.log('     *  -v --version:', 'Displays the above version', '\n');
-		console.log('     *  run filename[.mini]:', 'Compiles and runs the file input', '\n');
-		console.log('     *  out inputname[.mini] [outputname[.js]]:', 'Compiles the input, writes to ouput file.');
-		console.log('If the output name is omitted the input name is used');
-	} else if(args[0] === '-version' || args[0] === '-v' || args[0] === '--version' || args[0] === '--v') {
-		console.log('M.js version:', require('../package.json').version);
-	} else if(args[0] === 'run') {
-		var fn = args[1];
-		
+	var args = process.argv.slice(2);
+
+	if(args[0] === '-h') {
+	    console.log('\n\tMinicript version:', require('../package.json').version, '\n');
+	    console.log('\t\t* mini:', 'Starts the interactive console', '\n');
+		console.log('\t\t* mini -v:', 'Displays the above version', '\n');
+		console.log('\t\t* mini -r filename:', 'Compiles and runs the file input', '\n');
+		console.log('\t\t* mini -c filename [-o output]:', 'Compiles the specified file', '\n');
+		console.log('\t\t* mini -d dirname  [-o output]:', 'Compiles every ".mini" file and copies others to output directory', '\n');
+	} else if(args[0] === '-v') {
+		console.log('\tMinicript version:', require('../package.json').version);
+	} else if(args[0] === '-r') { 
+		var fn = args[1], dir;
+
 		if(!path.extname(fn)) fn += '.mini';
-		
+
 		if(fs.existsSync(fn)) {
-			eval(compiler.compile(fs.readFileSync(fn).toString()));
+			fn = path.resolve(fn);
+
+			process.argv = ['Miniscript', fn].concat(args.slice(2));
+
+			mini.register()
+
+			module.filename = fn;
+			module.moduleCache = {};
+			module.paths = require('module')._nodeModulePaths(path.dirname(fn));
+			
+			module._compile(mini.compile(fs.readFileSync(fn).toString()), module.filename);
 		} else {
 			console.log('Read Error: File input does not exist');
 		}
-	} else if(args[0] == 'out') {
-	    var src = args[1], out = args[2];
-		
+	} else if(args[0] === '-c') {
+	    var src = args[1], out;
+
 		if(!path.extname(src)) src += '.mini';
-		
+
+		out = (args[2] == '-o') ? args[3] : src.replace(path.extname(src), '.js')
+
+		if(!path.extname(out)) out += '.js';
+
 		if(fs.existsSync(src)) {
 			var src_text = fs.readFileSync(src).toString();
-			var out_text = compiler.compile(src_text);
-			if(!out) out = src.replace(/\.mini|\.txt/, '.js');
-			else if(!path.extname(out)) out += '.js';
+			var out_text = mini.compile(src_text);
+			
 			fs.writeFileSync(out, out_text);
 		} else {
 			console.log('Read Error: File input does not exist');
 		}
-	} else {
-		//run by default
-		var fn = args[0];
-		
-		if(!path.extname(fn)) fn += '.mini';
-		
-		if(fs.existsSync(fn)) {
-			eval(compiler.compile(fs.readFileSync(fn).toString()));
+	} else if (args[0] === '-d') {
+		var input_dir = args[1],
+			output_dir = (args[2] == '-o') ? args[3] : input_dir + '_js';
+
+		if(!fs.lstatSync(input_dir).isDirectory()) {
+			console.log('Input error: path specified is not a directory');
 		} else {
-			console.log('Read Error: File input does not exist');
+			var contents = [{path: '', ls: fs.readdirSync(input_dir)}], curr;
+
+			while(curr = contents[0]) {
+				if(!fs.existsSync(output_dir + curr.path)) fs.mkdirSync(output_dir + curr.path);
+
+				for (var i = 0, len = curr.ls.length; i < len; ++i) {
+					var input = input_dir + curr.path + '/' + curr.ls[i];
+
+					if (fs.lstatSync(input).isFile()) {
+						if(path.extname(input) === '.mini') {
+							var output_path = output_dir + curr.path + '/' + curr.ls[i].slice(0, -5) + '.js';
+							try {
+								var output_text = mini.compile(fs.readFileSync(input).toString(), true);
+							} catch (error) {
+								console.log('Error during compile on: "' + input + '"');
+								console.log(error.message);
+								return;
+							}
+							fs.writeFileSync(output_path, output_text);
+						} else {
+							try {
+								fs.createReadStream(input).pipe(fs.createWriteStream(output_dir + curr.path + '/' + curr.ls[i]));
+							} catch (error) {
+								console.log('Copy error: ' + error.minig);
+							}
+							
+						}
+					} else if (fs.lstatSync(input).isDirectory()) {
+						contents.push({path:curr.path + '/' + curr.ls[i], ls: fs.readdirSync(input)});
+					}
+				}
+				contents.shift();
+			}
 		}
+	} else {
+		var stdin  = process.stdin, 
+		    stdout = process.stdout,
+		    source = '';
+		    prompt = function () { stdout.write(source === '' ? '> ' : '... '); };
+
+		console.log('\nMinicript version:', require('../package.json').version);
+		console.log('Press Ctrl+C (SIGINT) to exit or cancel multi-line statement.\n');
+
+		stdin.setEncoding('utf8');
+
+		//Special thanks
+		var vm = require('vm');
+		var Script = vm.Script;
+		var Module = require('module');
+
+		var context = Script.createContext();
+		context.global = context.root = context.GLOBAL = context;
+		context.__filename = path.resolve(process.cwd() + '/eval');
+    	context.__dirname  = path.dirname(context.__filename);
+        
+        context.module = _module = new Module('eval');
+        context.require = _require = function(path) {
+          return Module._load(path, _module, true);
+        };
+        _module.filename = context.__filename;
+        _ref1 = Object.getOwnPropertyNames(require);
+        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+          r = _ref1[_i];
+          if (r !== 'paths') {
+            _require[r] = require[r];
+          }
+        }
+        _require.paths = _module.paths = Module._nodeModulePaths(process.cwd());
+        _require.resolve = function(request) {
+          return Module._resolveFilename(request, _module);
+        };
+        //end thanks
+        context.console = console;
+        context.process = process;
+        _require.extensions['.mini'] = function(module, file) {
+			return module._compile(mini.compile(fs.readFileSync(file, 'utf8').toString()), file);
+		}
+
+		global.clear = function() {
+			console.log('\033c');
+		}
+
+		stdin.on('readable', function () {
+			var chunk = stdin.read(), code;
+				if (chunk !== null) {
+					source += chunk;
+					try {
+						result = vm.runInContext(mini.compile(source), context);
+						console.log(util.inspect(result, {colors:true}));
+		    			source = '';
+					} catch (e) {
+						if(e.message.indexOf("got 'EOF'") === -1) {
+							source = '';
+							console.log(e);
+						}
+					}
+				}
+				prompt();
+		});
+
+		process.on('SIGINT', function() {
+			if(source.length > 0) {
+				source = '';
+				stdout.write('\n');
+				prompt();
+			} else {
+				console.log('\nExiting now');
+				process.exit(0);
+			}
+		});
 	}
+})();
