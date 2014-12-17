@@ -1,12 +1,27 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>miniscript</title>
+    <link rel="apple-touch-icon" sizes="57x57" href="icon/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="icon/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="icon/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="icon/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="icon/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="icon/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="icon/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="icon/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icon/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="icon/favicon-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="icon/favicon-160x160.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="icon/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="icon/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="icon/favicon-32x32.png" sizes="32x32">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-TileImage" content="icon/mstile-144x144.png">
     <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
-    <link type="text/css" rel="stylesheet" href="css/shCoreMini.css" />
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link type="text/css" rel="stylesheet" href="css/shCore.css" />
+    <link type="text/css" rel="stylesheet" href="css/shThemeRDark.css" />
     <script>
         function toggle_editor() {
             if (editor.style.display == '' || editor.style.display == 'none') {
@@ -30,11 +45,18 @@
 
         window.onload = function () {
             input.onkeyup = input.onpaste = debounce(function () {
-                var result = mini(input.value);
+                try {
+                    var result = mini.compile(input.value);
+                } catch (error) {
+                    if(/got '(?:EOF|\)|\])'/.test(error.message) === false) {
+                        console.log(error);
+                    }
+                }
+                
                 if (result != null) {
                     output.value = js_beautify(result);
                 }
-            }, 150);
+            }, 50);
             
             document.body.onclick = function (e) {
                 if(e.target != input && e.target != output && e.target != run && e.target != trybtn)
@@ -66,19 +88,21 @@
     </script>
 </head>
 <body>
-    <div id="bar">
+    <div id="header">
         <table>
             <tr>
                 <td>
                     <span id="logo">
-                        mini
+                        <span class="logo">{</span> 
+                        <span class="logo" id="text_slide">mini</span>
+                        <span class="logo">}</span>
                     </span>
                 </td>
                 <td>
                     <div id='cssmenu'>
                         <ul>
                             <li><a id="trybtn" href='#' onclick="toggle_editor(); return false;">Try</a></li>
-                            <!--li><a href='#'><span>Documentation</span></a></li-->
+                            <li><a href='#Documentation'><span>Documentation</span></a></li>
                             <li class='last'><a href='https://github.com/thmour/miniscript' target="_blank">View on Github</a></li>
                         </ul>
                     </div>
@@ -86,365 +110,766 @@
             </tr>
         </table>
     </div>
-    <span id="bug"></span>
     <div id="editor">
-        <button id="run">run</button>
-        <textarea id="input" rows="20" placeholder="Insert miniscript code here."></textarea>
-        <textarea id="output" rows="20" placeholder="Type on the left side and wait to see the js result!"></textarea>
+        <textarea id="input" rows="20" placeholder="Insert code here."></textarea>
+        <div style="display: inline-block">
+            <button id="run">run</button>
+            <textarea id="output" rows="20"placeholder="Javascript result" readonly></textarea>
+        </div>
     </div>
-    <p>
-        <span class='header'>What?</span><br><br>
-        miniscript is a minimal dialect of javascript. It inherits every good part of Python, Ruby and C++. You can compile the code to javascript or run it directly from the console.
-    </p>
-    <p>
-        <span class='header'>Why?</span><br><br>
-        It is semicolon free, indent independent, DRY, readable and easy to learn. At the end, it's all javascript!
-    </p>
-    <p>
-        <span class='header'>Install:</span><br><br>
-        You can install the miniscript compiler using the following command:
-    </p>
-    <p class="command">$ npm install miniscript -g</p>
-    <p>
-        then you can either run your script, or output the javascript file:
-    </p>
-    <p class="command">
-        $ mini [run] myscript[.mini]<br>
-        $ mini  out  myscript[.mini] [output_name[.js]]
-    </p>
-    <p class="middle">
-        <span class='header'>Let's begin!</span><br><br>
-        Below is your first hello world program:
-    </p>
-    <code class="block">
-        <pre class="brush: mini;">
-            print 'Hello World', '!'
-        </pre>
-        <pre class="brush: mini;">
-            console.log('Hello World', '!');
-        </pre>
-    </code>
-    <p class="middle">
-        As you see it resembles python, how about functions?
-    </p>
-    <code class="block">
-        <pre class="brush: mini;">
-            foo = # bar, baz {
-                print bar, baz
-            }
-            &nbsp;
-        </pre>
-        <pre class="brush: js;">
-            var foo;
-            foo = function(bar, baz) {
-                console.log(bar, baz);
-            };
-        </pre>
-    </code>
-    <p class="middle">
-        foo is the name of the function, and it can be used inside it to achieve recursion.
-        As you saw many things are considered obvious and have been removed from the miniscript syntax like parentheses and code blocks.
-        Next stop, assignments:
-    </p>
-    <code class="block">
-        <pre class="brush: mini;">                     
-            x = 5
-            
-            foo = # {
-                return 'maria', 21
-            }
-            name, age = foo()
+    <div id="container">
+        <p>
+            <br><span class='header'>About:</span><br><br>
+            Miniscript is a minimal dialect of Javascript. It is influenced by the simplicity of Python and Ruby, and
+            inherits some good parts of other popular languages. Redundant semicolons, parentheses and brackets are
+            removed, repeating patterns have been reduced and statements have been "mini"mized.
+        </p>
+        <p>
+            <br><span class='header'>Install:</span><br><br>
+            You can install the miniscript compiler using the following command:
+        </p>
+        <p class="command">$ npm install -g miniscript</p>
+        <p>
+            Then you got mini as the main command from your console
+        </p>
+        <p class="command">
+            $ mini &nbsp;&nbsp; //Launches interactive console<br>
+            $ mini -r //Runs specified script<br>
+            $ mini -c //Compiles given script<br>
+            $ mini -d //Compiles a folder recursively<br>
+        </p>
+        <p>
+            If file extensions are omitted, they are assumed to be ".mini" and ".js" where applicable.<br>
+            On the last two commands you can specify the output using "-o" switch.
+        </p>
+        <p>
+            <br><span id="Documentation" class='header'>Documentation:</span><br><br>
+        </p>
+        <ul id="doclist">
+            <li>Values:</li>
+            <div>
+                <p class="middle">
+                    Same as javascript, with some minor differences. First one is that ".1" and "1." decimal literals have been removed.
+                    It is advised to use "0.1" and "1.0" instead for better readability. Object definitions don't need commas to separate properties, but if you plan to write them in one line a comma separator makes them much more readable.
+                </p>
+                <code class="block">
+                    <pre class="brush: mini;">
+                        person = {
+                            name = { 
+                                first = 'John'
+                                last = 'Smith'
+                            }
+                            height = 1.76, weight = 65.0
+                            hair = 'brown'
+                        }                        
+                        &nbsp;
+                        &nbsp;
+                    </pre>
+                    <pre class="brush: js;">
+                        var person;
+                        person = {
+                            name: {
+                                first: 'John', 
+                                last: 'Smith'
+                            }, 
+                            height: 1.76,
+                            weigth: 65.0,
+                            hair: 'brown'
+                        };
+                    </pre>
+                </code>
+            </div>
+            <li>Functions:</li>
+            <div>
+                <p class="middle">
+                    Functions in miniscript are anonymous and they are assigned to a variable. Lambdas follow
+                    the same principle but they don't have a body and return a value instead, just like any
+                    mathematical function.
+                </p>
+                <code class="block">
+                    <pre class="brush: mini;">
+                        foo = (bar, baz) {
+                            print bar, baz
+                        }
 
-            y = x = 5
+                        //Parenthesis for 0 or 1 arguments is optional
+                        full = () => null
 
-            x = x + (y = 6)
-        </pre>
-        <pre class="brush: js;">
-            var x, foo, name, age, y;
-            x = 5;
-            foo = function() {
-                return ['maria', 21];
-            };
-            _c = foo();
-            name = _c[0];
-            age = _c[1];
-            y = x = 5;
-            x = x + (y = 6);
-        </pre>
-    </code>
-    <p class="middle">
-        This is what you can only do with assignments (for now).
-        If you want to make an assignment when the compiler expects a value, wrap it inside parentheses.
-        Let's continue with a full if statement:
-    </p>
-    <code class="block">
-        <pre class="brush: mini;">
-            a = 5
 
-            if a < 1
-                print 'a is less than 1'
-            elif a < 4
-                print 'a is less than 4'
-            else
-                print 'a is greater than or equal to 4'
-            ;
-        </pre>
-        <pre class="brush: js;">
-            var a;
-            a = 5;
-            if (a < 1) {
-                console.log('a is less than 1');
-            } else if (a < 4) {
-                console.log('a is less than 4');
-            } else {
-                console.log('a is greater than or equal to 4');
-            }
-        </pre>
-    </code>
-    <p class="middle">
-        Only a ';' is required to finish an if statement, the same goes for other statements containing code blocks.
-        Variables start with a lowercase letter while classes start with uppercase one. About time for a switch statement:
-    </p>
-    <code class="block">
-        <pre class="brush: mini;">
-            switch john.likes
-	            case 'basket', 'football'
-		            send_message(john, 'What team you support?')
-	            case 'squash'
-		            send_message(john, 'I don\'t know much about it')
-	            default
-		            send_message(john, 'Whatever...')
-            ;
-            &nbsp;
-            &nbsp;
-            &nbsp;
-        </pre>
-        <pre class="brush: js;">
-            switch (john.likes) {
-                case 'basket':
-                case 'football':
-                    send_message(john, 'What team you support?');
-                    break;
-                case 'squash':
-                    send_message(john, 'I don\'t know much about it');
-                    break;
-                default:
-                    send_message(john, 'Whatever...');
-            }
-        </pre>
-    </code>
-    <p class="middle">
-        Pretty neat, huh? At least miniscript tries to keep it simple and elegant.
-        Now we can check out some for loops:
-    </p>
-    <code class="block">
-        <pre class="brush: mini;">
-            obj = { a:1 b:2 c:3 }
+                        negate = x => -x
 
-            db =  { user:'peter' age:21 },
-                  { user:'john'  age:32 },
-                  { user:'ralph' age:27 }
 
-            for i of 1..5
-	            print i
-            ;
+                        add  = (a, b) => a + b
 
-            for key in obj
-	            print key + ':', obj[key]
-            ;
 
-            String::capitalize = # {
-                return this[0].toUpperCase() + this.slice(1)
-            }
+                        add23 = (a, b => a + b)(2, 3)
+                        &nbsp;
+                    </pre>
+                    <pre class="brush: js;">
+                        var foo, full, negate, add, add23;
+                        foo = function (bar, baz) {
+                            console.log(bar, baz);
+                        };
+                        full = function() {
+                            return null;
+                        };
+                        negate = function(x) {
+                            return -x;
+                        };
+                        add = function(a, b) {
+                            return a + b;
+                        };
+                        add23 = (function(a, b) {
+                            return a + b;
+                        })(2, 3);
+                    </pre>
+                </code>   
+            </div>
+            <li>Sequences:</li>
+            <div>
+                <p class="middle">
+                    Sequences have an initial value, an end value and an optional step. The
+                    step can be either a positive number or a function literal. Be careful
+                    with these expressions, as a careless implementation may lead to infinite 
+                    loops and memory exhaust. The sequence expression of the first example is
+                    flattened inside the array because its value is known in compile time.
+                    Maybe in future versions dynamic sequences will have the same effect.
+                </p>
+                <code class="block">
+                    <pre class="brush: mini;">
+                        countdown = [10 to 1, 'Go!']
+ 
+                        even = 1 to 9 by 2
+                         
+                        pow2 = 1 to 1024 by (a => 2 * a)
+                        
+                        //next = callback(result[i-1], result[i])
+                        fib = [0, 1] to 1e+9 by (a, b => a + b)
+                         
+                        String::next = 
+                            => String.fromCharCode(this.charCodeAt(0) + 1)
+                        az = 'a' to 'z' by (a => a.next())
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                    </pre>
+                    <pre class="brush: js;">
+                        var _utils = require("miniscript/utils");
+                        var countdown, even, pow2, fib, az;
+                        countdown = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 'Go!'];
+                        even = [1, 3, 5, 7, 9];
+                        pow2 = _utils.recursion(1, 1024, (function(a) {
+                            return 2 * a;
+                        }), false);
+                        fib = _utils.recursion([0, 1], 1e+9, (function(a, b) {
+                            return a + b;
+                        }), false);
+                        String.prototype.next = function() {
+                            return String.fromCharCode(this.charCodeAt(0) + 1)
+                        };
+                        az = _utils.recursion('a', 'z', (function(a) {
+                            return a.next();
+                        }), false);
+                    </pre>
+                </code>
+            </div>
+            <li>Assignments:</li>
+            <div>
+                <p class="middle">
+                    Same as Javascript plus simple array destructuring. More will come in the next version.
+                </p>
+                <code class="block">
+                    <pre class="brush: mini;">
+                        x = y = 1
 
-            for user, age in db
-                print "%user.capitalize() is %{age + 1} years old"
-            ;
-            &nbsp;
-            &nbsp;
-        </pre>
-        <pre class="brush: js;">
-            var obj, db, i, key, user, age, _i, _l;
-            obj = { a: 1, b: 2, c: 3 };
-            db = [{user: 'peter', age: 21},
-                  {user: 'john' , age: 32},
-                  {user: 'ralph', age: 27}];
+                        y += x += 3
 
-            for (i = 0; ++i <= 5;) {
-                console.log(i);
-            }
+                        x, y = y, x //same as x, y = [y, x]
 
-            for (key in obj) {
-                console.log(key + ':', obj[key]);
-            }
+                        arr = => 1 to 100
 
-            String.prototype.capitalize = function() {
-                return this[0].toUpperCase() + this.slice(1);
-            };
+                        n1, n2, n3 = arr()[5..]
+                        &nbsp;
+                    </pre>
+                    <pre class="brush: js;">
+                        var _utils = require("miniscript/utils");
+                        var x, y, _t, arr, n1, n2, n3;
 
-            for (_i = -1, _l = db.length; ++_i < _l;) {
-                user = db[_i].user;
-                age = db[_i].age;
-                console.log(user.capitalize() + " is " + (age + 1) + " years old");
-            }
-        </pre>
-    </code>
-    <p class="middle">
-        You see that the for in behaves different when there are more than one iterators.
-        This is more useful than splitting every member of an object into 2 variables.
-        You can also avoid the "[]" on the first level of the assignment.
-        Now we proceed to classes. Here is the first example:
-    </p>
-    <code class="block">
-        <pre class="brush: mini;">
-            class Animal { group, colors, legs }
+                        x = y = 1;
+                        y += x += 3;
+                        _t = [y, x], x = _t[0], y = _t[1];
+                        arr = function() {
+                            return _utils.range(1, 100, 1);
+                        };
+                        _t = arr().slice(5), n1 = _t[0], n2 = _t[1], n3 = _t[2];
+                    </pre>
+                </code>   
+            </div>
+            <li>Branching Statements:</li>
+            <div>
+                <p class="middle">
+                    Parentheses and brackets are removed from the if statement.
+                    Switch cases are isolated and default is always the last case if needed.
+                </p>
+                <code class="block">
+                    <pre class="brush: mini;">
+                        //...
+                        if req.url is '/favicon.ico'
+                            img = fs.readFileSync('./favicon.ico')
+                            res.writeHead(200,{"Content-Type"= "image/x-icon"})
+                            res.end(img, 'binary')
+                        elif fs.exists(res.url)
+                            page = fs.readFileSync(res.url).toString()
+                            res.writeHead(200, {"Content-Type"= "text/html"})
+                            res.end(page)
+                        else
+                            res.writeHead(404, {"Content-Type"= "text/plain"})
+                            res.end('Error 404: Page not found')
+                        end
+                        //...
 
-            class Dog : Animal (@name, colors, @breed)
-		        super 'mammal', colors, 4
-            ;
+                        x = Math.floor(Math.random() * 3) + 1
+                        switch x
+                            case 1, 2
+                                print 'x is 1 or 2'
+                            case 3
+                                print 'x is 3'
+                            default
+                                print 'whatever'
+                        end
+                        &nbsp;
+                        &nbsp;
+                    </pre>
+                    <pre class="brush: js;">
+                        var img, page, x;
 
-            Dog::pet = # {
-	            print 'wuf wuf!'
-            }
+                        if (req.url === '/favicon.ico') {
+                            img = fs.readFileSync('./favicon.ico');
+                            res.writeHead(200, {"Content-Type": "image/x-icon"});
+                            res.end(img, 'binary');
+                        } else if (fs.exists(res.url)) {
+                            page = fs.readFileSync(res.url).toString();
+                            res.writeHead(200, {"Content-Type": "text/html"});
+                            res.end(page);
+                        } else {
+                            res.writeHead(404, {"Content-Type": "text/plain"});
+                            res.end('Error 404: Page not found');
+                        }
+                        x = Math.floor(Math.random() * 3) + 1;
+                        switch (x) {
+                          case 1:
+                          case 2:
+                            console.log('x is 1 or 2');
+                            break;
+                          case 3:
+                            console.log('x is 3');
+                            break;
+                          default:
+                            console.log('whatever');
+                        }
+                    </pre>
+                </code>   
+            </div>
+            <li>Looping Statements:</li>
+            <div>
+                <p class="middle">
+                    The default for statement has been deleted from the grammar and it
+                    is replaced by many abstractions. While and Do-While remain the same.
+                </p>
+                <code class="block">
+                    <pre class="brush: mini;">
+                        array = []
 
-            my_dog = new Dog('frisky', ['brown', 'white'], 'corgi')
+                        for 5 times
+                            array.push(1 to 3)
+                        end
 
-            my_dog.pet()   
-            &nbsp;
-            &nbsp;
-            &nbsp;
-            &nbsp; 
-        </pre>
-        <pre class="brush: js;">
-            var my_dog;
-            function Animal(group, colors, legs) {
-                this.group = group;
-                this.colors = colors;
-                this.legs = legs;
-            }
-            function Dog(name, colors, breed) {
-                Animal.call(this, 'mammal', colors, 4);
-                this.name = name;
-                this.breed = breed;
-            }
-            Dog.prototype = Object.create(Animal.prototype);
-            Dog.prototype.pet = function() {
-                console.log('wuf wuf!');
-            };
-            my_dog = new Dog('frisky', ['brown', 'white'], 'corgi');
-            my_dog.pet();
-        </pre>
-    </code>
-    <p class="middle">
-        Right after the class and its name, you can define either an object or a function.
-        Optional body generates "this.member = member" code and "super" if needed. One more example:
-    </p>
-    <code class="block">
-        <pre class="brush: mini;">
-            class Point {x, y}
+                        sum = 0
+                        for index i, j of array
+                            sum += array[i,j]
+                        end
+                        print "Sum is %sum"
 
-            class Point3 : Point {z}
+                        users = [
+                            { name='john', pass='1234' }, 
+                            { name='alex', pass='413x' }
+                        ]
+                        for each name, pass in users
+                            print "Name: %name\tPass: %pass"
+                        end
 
-            Point3.add = # p1, p2 {
-	            return new Point3(p1.x + p2.x,
-                                  p1.y + p2.y, 
-					              p1.z + p2.z)
-            }
+                        //Default ES6 'for-of'
+                        for num of array[0]
+                            print num
+                        end
 
-            print Point3.add(new Point3(1,2,3), new Point3(1,1,1))
-            //x:2, y:3, z:4
-            &nbsp;
-            &nbsp;
-            &nbsp;
-            &nbsp;
-            &nbsp;
-            &nbsp;
-            &nbsp;
-        </pre>
-        <pre class="brush: js;">
-            var _utils = {
-                extend: function(child, parent) {
-                    child.prototype = Object.create(parent.prototype);
-                    child.prototype.constructor = child;
-                }
-            };
-            function Point(x, y) {
-                this.x = x;
-                this.y = y;
-            }
-            function Point3(x, y, z) {
-                Point.call(this, x, y);
-                this.z = z;
-            }
-            _utils.extend(Point3, Point);
-            Point3.add = function(p1, p2) {
-                return new Point3(p1.x + p2.x, p1.y + p2.y, p1.z + p2.z);
-            };
-            console.log(Point3.add(new Point3(1, 2, 3), new Point3(1, 1, 1)));
-        </pre>
-    </code>
-    <p class="middle">
-        As you see there are 2 types of declaring classes, one with object notation and the other with function constructor.
-        Utils is a library that provides some basic scripts to save some space of the output file avoiding unnecessary repetitions.
-        Let's see how we can deploy a basic http server using Node.js:
-    </p>
-    <code class="block">
-        <pre class="brush: mini;">
-            import http
-            import fs.readFileSync as read
+                        write 'Odd numbers:'
+                        for i of 9 to 1 by 2
+                            write ' %i'
+                        end
+                        write \n
 
-            index = read('index.html').toString()
+                        for idx, num of array[0]
+                            print "Index: %idx\tValue: %num"
+                        end
 
-            http.createServer(# req, res {
-              res.writeHead(200, {'Content-Type': 'text/html'})
-              res.end(index)
-            }).listen(1337, '127.0.0.1')
+                        //Default 'for-in'
+                        for key in users[0]
+                            print key
+                        end
 
-            print 'Server running at http://127.0.0.1:1337/'
-        </pre>
-        <pre class="brush: js;">
-            var index;
-            var http = require('http');
-            var read = require('fs').readFileSync;
-            index = read('index.html').toString();
-            http.createServer(function(req, res) {
-                res.writeHead(200, {
-                    'Content-Type': 'text/html'
-                });
-                res.end(index);
-            }).listen(1337, '127.0.0.1');
-            console.log('Server running at http://127.0.0.1:1337/');
-        </pre>
-    </code>
-    <p class="middle">
-        On the web import works asynchronously and its syntax differs from the commonjs one
-    </p>
-    <code class="block">
-        <pre class="brush: mini;">
-            jQuery = 'https://code.jquery.com/jquery-2.1.1.min.js'
-            mylib  = './mylib.js'
+                        for key, val in users[0]
+                            print "Key: %key\tValue: %val"
+                        end
 
-            import jQuery, mylib
-                $('body').html('Hello world')
-            ; 
-        </pre>
-        <pre class="brush: js;">
-            var jQuery, mylib;
-            jQuery = 'https://code.jquery.com/jquery-2.1.1.min.js';
-            mylib = './mylib.js';
-            require([jQuery, mylib], function() {
-                $('body').html('Hello world');
-            });
-        </pre>
-    </code>
-    <p class="middle">
-        When every library is loaded, the codeblock will be executed and it will set the innerHTML of the body element to hello world
-    </p>
+                        while true
+                            break
+                        end
+
+                        do
+                            break
+                        while true;
+                    </pre>
+                    <pre class="brush: js;">
+                        var array, _i, _len, sum, i, j, _len1, users, name, pass, _arr, num, idx, key;
+                        array = [];
+                        for (_i = 0, _len = 5; _i &lt; _len; ++_i) {
+                            array.push([1, 2, 3]);
+                        }
+                        sum = 0;
+                        for (i = 0, _len = array.length; i &lt; _len; ++i) {
+                            for (j = 0, _len1 = array[i].length; j &lt; _len1; ++j) {
+                                sum += array[i][j];
+                            }
+                        }
+                        console.log("Sum is " + sum);
+                        users = [{name: 'john', pass: '123'}, {name: 'alex', pass: '413x'}];
+                        for (_i = 0, _len = users.length; _i &lt; _len; ++_i) {
+                            name = users[_i].name;
+                            pass = users[_i].pass;
+
+                            console.log("Name: " + name + "\tPass: " + pass);
+                        }
+                        for (_i = 0, _arr = array[0], _len = _arr.length; _i &lt; _len; ++_i) {
+                            num = _arr[_i];
+
+                            console.log(num);
+                        }
+                        process.stdout.write('Odd numbers:');
+                        for (i = 9; i >= 1; i -= 2) {
+                            process.stdout.write(' ' + i);
+                        }
+                        process.stdout.write("\n");
+                        for (idx = 0, _arr = array[0], _len = _arr.length; idx &lt; _len; ++idx) {
+                            num = _arr[idx];
+
+                            console.log("Index: " + idx + "\tValue: " + num);
+                        }
+                        _arr = users[0];
+                        for (key in _arr) {
+                            console.log(key);
+                        }
+                        _arr = users[0];
+                        for (key in _arr) {
+                            val = _arr[key];
+
+                            console.log("Key: " + key + "\tValue: " + val);
+                        }
+                        while (true) {
+                            break;
+                        }
+                        do {
+                            break;
+                        } while (true);
+                    </pre>
+                </code>
+            </div>
+            <li>Classes:</li>
+            <div>
+                <p class="middle">
+                    A bit of Ruby with C++ extension style creates miniscript's classes.
+                    The <code class="purple">new</code> function is the constructor of the
+                    class while the other variables define the prototype of the class. Types
+                    are also classes with some optional members defined in braces. They are
+                    often used for some simple class definitions or for specifying general classes.
+                </p>
+                <code class="block">
+                    <pre class="brush: mini;">
+                        import lodash as _
+
+                        type Point {x, y}
+
+                        class Polygon
+                            toString = () =>
+                                "%.constructor.name: %JSON.stringify(.points)"
+                            new = (points) {
+                                if _.every(points, p => p instanceof Point)
+                                    .points = points
+                                else
+                                    throw new Error("Bad arguments")
+                                end
+                            }
+                        end
+
+                        points = [new Point(0,0), new Point(4,0), {x=0,y=3}]
+                        try 
+                            triangle = new Polygon(points)
+                        catch e
+                            print e
+                        end 
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                    </pre>
+                    <pre class="brush: js;">
+                        var _, points, triangle;
+                        _ = require('lodash');
+
+                        function Point(x, y) {
+                            this.x = x;
+                            this.y = y;
+                        }
+
+                        function Polygon(points) {
+                            if (_.every(points, function(p) {
+                                    return p instanceof Point;
+                                })) {
+                                this.points = points;
+                            } else {
+                                throw new Error("Bad arguments");
+                            }
+                        }
+                        Polygon.prototype.toString = function() {
+                            return this.constructor.name + ": " +
+                                JSON.stringify(this.points);
+                        };
+                        points = [new Point(0, 0), new Point(4, 0), {x: 0, y: 3}];
+                        try {
+                            triangle = new Polygon(points);
+                        } catch (e) {
+                            console.log(e);
+                        }
+                    </pre>
+                </code>
+                <p class="middle">
+                    Below are two examples of how you extend objects. Super must be called when
+                    a class is extended and a custom cunstructor with arguments is defined.
+                    Super must be at the first line of the constructor else a syntax error is thrown.
+                    In the constructor's argument list you can use <code><code class="red">this</code>.arg</code>
+                    or just <code>.</code> for assigning class members same as the constructor's arguments.
+                </p>
+                <code class="block">
+                    <pre class="brush: mini;">
+                        type Animal { group, colors, legs, sound }
+ 
+                        class Dog : Animal 
+                            new = (.name, colors) { 
+                                super('mammal', colors, 4, 'woof woof')
+                                //just for showcase, if keyword this
+                                //is used as the first argument in a
+                                //function or lambda definition then
+                                //it binds the current value of this
+                                .breed = this => .constructor.name
+                            }
+                          
+                            pet = () {
+                                print '%.name: %.sound!'
+                            } 
+                        end
+
+                        type Corgi : Dog
+                           
+                        mydog = new Corgi('frisky', ['black', 'brown', 'white'])
+                          
+                        mydog.pet()
+
+                        print mydog.breed()
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                    </pre>
+                    <pre class="brush: js;">
+                        var _utils = require("miniscript/utils");
+                        var mydog;
+                        function Animal(group, colors, legs, sound) {
+                            this.group = group;
+                            this.colors = colors;
+                            this.legs = legs;
+                            this.sound = sound;
+                        }
+
+                        function Dog(name, colors) {
+                            Animal.call(this, 'mammal', colors, 4, 'woof woof');
+                            this.name = name;
+                            this.breed = (function(_this) {
+                                return function() { return _this.constructor.name }
+                            })(this);
+                        } _utils.extend(Dog, Animal);
+                        Dog.prototype.pet = function () {
+                            console.log(this.name  + ': ' + this.sound + '!');
+                        };
+
+                        function Corgi() {
+                            return Dog.apply(this, arguments);
+                        } _utils.extend(Corgi, Dog);
+
+                        mydog = new Corgi('frisky', ['black', 'brown', 'white']);
+                        mydog.pet();
+                        console.log(mydog.breed());
+                    </pre>
+                </code>
+                <code class="block">
+                    <pre class="brush: mini;">
+                        type Point {x, y}
+
+                        type Point3D : Point {z}
+
+                        //z=0 x=1 y=2
+                        print new Point3D(0, 1, 2)
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                        &nbsp;
+                    </pre>
+                    <pre class="brush: js;">
+                        var _utils = require("miniscript/utils");
+                        function Point(x, y) {
+                            this.x = x;
+                            this.y = y;
+                        }
+                        function Point3D(z) {
+                            Point.apply(this, [].slice.call(arguments, 1));
+                            this.z = z;
+                        } _utils.extend(Point3D, Point);
+                        console.log(new Point3D(0, 1, 2));
+                    </pre>
+                </code>
+            </div>
+            <li>Import/Export:</li>
+            <div>
+                <p class='middle'>
+                    Import replaces the most common <code>require</code> cases. The name chosen
+                    for the files is the last identifier of the module expression.
+                    Inside a string the name chosen is the filename/packagename with
+                    a valid variable name; spaces, dots and dashes are allowed and are
+                    turned into underscores. Import doesn't accept variables so require
+                    should be used. Export keyword is used to create a <code>module.exports</code>
+                    object.
+                </p>
+                <code class="block">
+                    <pre class="brush: mini;">
+                        import http, fs
+                        import fs.readFileSync as read
+
+                        import '../run test.js'
+
+                        run_test.example(1)
+
+                        //file: run test.js
+                        export example = (n) {
+                            try
+                                require('./example' + n + '.js')
+                            catch err
+                                print 'example not found'
+                            end
+                        }
+                        //endfile
+
+                        import '../class.js'.TreeNode
+
+                        print new TreeNode(1, null, new TreeNode(2, null, null))
+
+                        //file: class.js
+                        export type TreeNode { val, left, right }
+                        &nbsp;
+                    </pre>
+                    <pre class="brush: js;">
+                        var http, fs, read, run_test, example, TreeNode;
+                        http = require('http'), fs = require('fs');
+                        read = require('fs').readFileSync;
+                        run_test = require('../run test.js');
+                        run_test.example(1);
+                        example = function (n) {
+                            try {
+                                require('./example' + n + '.js');
+                            } catch(err) {
+                                console.log('example not found');
+                            }
+                        }
+                        TreeNode = require('../class.js').TreeNode;
+                        console.log(new TreeNode(1, null, new TreeNode(2, null, null)));
+                        function TreeNode(val, left, right) {
+                            this.val = val;
+                            this.left = left;
+                            this.right = right;
+                        }
+                        //each file will have one value exported
+                        module.exports = {
+                            example: example,
+                            TreeNode: TreeNode
+                        };
+                    </pre>
+                </code>
+            </div>
+            <li>Try/Catch/Exceptions:</li>
+            <div>
+                <p class="middle">
+                    In future versions there may be a multiple catch statement
+                    with syntax like: <code><code class="blue">catch</code> <code class="yellow">SyntaxError</code> err</code>
+                </p>
+                <code class="block">
+                    <pre class="brush: mini;">
+                        //extending Error won't work properly because "javascript"
+                        class error
+                            new = (.message) {
+                                .name = .constructor.name
+                                .stack = (new Error).stack
+                            }
+                        end
+
+                        type SuperError : error
+
+                        try
+                            throw SuperError("Nothing special")
+                        catch err
+                            if err instanceof SuperError
+                                print "super: " + err.message
+                            end
+                        finally
+                            //Optional as usual
+                        end 
+                    </pre>
+                    <pre class="brush: js;">
+                        var _utils = require("miniscript/utils");
+                        function error(message) {
+                            this.message = message;
+                            this.name = this.constructor.name;
+                            this.stack = (new Error).stack;
+                        }
+
+                        function SuperError() {
+                            return error.apply(this, arguments);
+                        } _utils.extend(SuperError, error);
+
+                        try {
+                            throw SuperError("Nothing special");
+                        } catch(err) {
+                            if (err instanceof SuperError) {
+                                console.log("super: " + err.message);
+                            }
+                        } finally {
+                        }
+                    </pre>
+                </code>   
+            </div>
+            <li>Issues:</li>
+            <div>
+                <p class="middle">
+                    For now error stack will display the lines and collumns of the generated file
+                    instead of the actual ".mini" file. The <code>.member</code> that is automatically
+                    turned into <code><code class="red">this</code>.member</code> has a problem being
+                    applied inside strings (non-interpolated). String interpolation is detected with a
+                    simple regural expression for now so it can't parse parentheses inside parentheses
+                    and other recursive patterns. There is a workaround for some of these problems.
+                </p>
+                <code class="block">
+                    <pre class="brush: mini;">
+                        import d3
+                        //problematic
+                        svg = d3.select("body").append("svg")
+                                .attr("width", 300)
+                                .attr("height", 300)
+
+                        print " .smth"
+                    </pre>
+                    <pre class="brush: js;">
+                        var d3, svg;
+                        d3 = require('d3');
+                        svg = d3.select("body").append("svg");
+                        this.attr("width", 300);
+                        this.attr("height", 300);
+
+                        console.log(" this.smth");
+                    </pre>
+                </code>
+                <code class="block">
+                    <pre class="brush: mini;">
+                        import d3
+                        //python style
+                        svg = d3.select("body").append("svg")   \
+                                .attr("width", 300)             \
+                                .attr("height", 300)
+
+                        print " \.smth"
+                    </pre>
+                    <pre class="brush: js;">
+                        var d3, svg;
+                        d3 = require('d3');
+                        svg = d3.select("body").append("svg")
+                                .attr("width", 300)
+                                .attr("height", 300);
+                        
+                        console.log(" .smth");
+                    </pre>
+                </code>
+                <code class="block">
+                    <pre class="brush: mini;">
+                        import d3
+                        //standard style
+                        svg = d3.select("body").append("svg").
+                                 attr("width", 300).
+                                 attr("height", 300)
+
+                        print ".smth"
+                    </pre>
+                    <pre class="brush: js;">
+                        var d3, svg;
+                        d3 = require('d3');
+                        svg = d3.select("body").append("svg").
+                                 attr("width", 300).
+                                 attr("height", 300);
+                        
+                        console.log(".smth");
+                    </pre>
+                </code>
+            </div>
+        </ul>
+    <script type="text/javascript" src="scripts/xregexp-min.js"></script>
     <script type="text/javascript" src="scripts/shCore.js"></script>
     <script type="text/javascript" src="scripts/shBrushMini.js"></script>
     <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
     <script type="text/javascript" src="scripts/js_beautifier.js"></script>
     <script type="text/javascript" src="scripts/web-miniscript-min.js"></script>
     <script type="text/javascript">SyntaxHighlighter.all();</script>
+    <script src="scripts/jquery.min.js"></script>
+    <script src="scripts/jquery.scrollUp.min.js"></script>
+    <script>
+        $(function() {
+            $.scrollUp({
+                animation: 'fade',
+                scrollImg: {
+                    active: true,
+                    type: 'background',
+                    src: 'img/top.png'
+                }
+            });
+            $('.command').each(function () {
+                $(this).html($(this).html().replace(/\$/g, "<span class='dollar'>$</span>"));
+            });
+            $('a[href*=#]:not([href=#])').click(function() {
+                if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+                  var target = $(this.hash);
+                  target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+                  if (target.length) {
+                    $('html,body').scrollTop(target.offset().top - 110);
+                    return false;
+                  }
+                }
+            });
+        });
+    </script>
 </body>
 </html>

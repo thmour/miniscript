@@ -1,115 +1,106 @@
-@import url(http://fonts.googleapis.com/css?family=Inconsolata);
 @import url(http://fonts.googleapis.com/css?family=Vollkorn);
-@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+@import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
+
+@font-face {
+  font-family: 'Source Code Pro';
+  src: url('SourceCodePro-Regular.ttf.woff') format('woff');
+}
 
 body {
   margin: 0;
-  margin-bottom: 10em;
+  padding-bottom: 7em;
   width: 100%;
   height: 100%;
   background: #ECF0F1;
   color: #130F0E;
-  font-family: 'Open Sans';
 }
 
 body * {
-    margin: 0;
-    padding: 0;
-}
-
-#bug {
-    display: block;
-    height: 7em;
-}
-
-.command {
-    display: block;
-    background: white;
-    color: #333;
-    font-family: Consolas, "Liberation Mono", Courier, monospace;
-    font-size: 14px;
-    padding: 0.75em;
-    border: solid 1px #ddd;
-    margin: 1em auto;
-    width: 80%;
-}
-
-#editor {
-    width: 80%;
-    z-index: 10;
-    top: 7em;
-    padding-left: 9%;
-    position: fixed;
-    display: none;
-}
-
-#editor textarea {
-    width: 47%;
-    padding: 0.5em 1em;
-    resize: none;
-}
-
-#editor button {
-    font-family: Consolas;
-    font-size: 12px;
-    color: white;
-    position: absolute;
-    padding: 5px 15px;
-    border: none;
-    top: 1em;
-    right: 1.5em;
-    background-color: #ee352a;
-}
-
-#editor button:hover {
-    background-color: #ff463b;
-}
-
-.block {
-    display: block;
-    margin: 1.5em auto;
-    width: 80%;
-}
-
-.block>div {
-    width: 49%;
-    display: inline-block;
-    vertical-align: top;
-    margin: 0;
-    padding: 0;
-}
-
-.header {
-    font-size: 28px;
-    text-decoration: underline;
+  margin: 0;
+  padding: 0;
 }
 
 p {
-  font-size: 18px;
-  margin: 1.5em auto;
+  font-family: 'Roboto Slab', sans-serif;
+  font-size: large;
+  line-height: 28px;
+  margin: auto;
   width: 80%;
 }
 
 p.middle {
-    margin-top: 1em;
-    margin-bottom: 1em;
+  margin-top: 1em;
+  margin-bottom: 1em;
 }
 
-#bar {
-  position: fixed;
+p>code {
+  color: #4d4d4c;
+  padding: 0.2em 0.5em;
+  font-size: 14px;
+  background: white;
+  font-family: 'Source Code Pro';
+}
+
+p code.blue {
+  color: #4271ae;
+}
+
+p code.red {
+  color: #c82829;
+}
+
+p code.yellow {
+  color: #c99e00;
+}
+
+p code.purple {
+  color: #3e999f;
+}
+
+#scrollUp {
+  background-image: url("../icon/top.png");
+  bottom: 20px;
+  right: 20px;
+  width: 38px;  /* Width of image */
+  height: 38px;   /* Height of image */
+}
+
+#text_slide {
+  width: 0.9em;
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: clip;
+  transition: width ease 0.5s;
+}
+
+#text_slide:hover {
+  width: 2.08em;
+}
+
+#header {
+  top: 0;
+  z-index: 10;
   width: 100%;
-  padding: 0.5em 0;
-  background: #ee352a;
-  z-index: 100;
+  position: fixed;
+  background: #123;
 }
 
-#bar table {
-    margin: auto;
+#header table {
+  margin: auto;
 }
 
-#bar table tr {
+#header tr {
   float: left;
   margin: auto;
+}
+
+#header td {
+  height: 87px;
+} 
+
+#container {
+  margin-top: 120px;
 }
 
 #logo {
@@ -119,14 +110,113 @@ p.middle {
   font-family: 'Vollkorn';
 }
 
+#editor {
+  top: 120px;
+  left: 10%;
+  z-index: 10;
+  margin: auto;
+  display: none;
+  width: inherit;
+  position: fixed;
+}
+
+#editor > textarea {
+  width: 35%;
+  padding: 0.5em 1em;
+  resize: none;
+}
+
+#editor > div {
+  width: 35%;
+}
+
+#editor > div textarea {
+  width: 100%;
+  padding: 0.5em 1em;
+  resize: none;
+}
+
+#editor button {
+  font-family: Consolas;
+  font-size: 12px;
+  color: white;
+  position: absolute;
+  padding: 5px 10px;
+  border: none;
+  top: 1em;
+  left: 70%;
+  background-color: #ee352a;
+}
+
+#editor button:hover {
+  background-color: #ff463b;
+}
+
+#doclist li {
+  display: list-item;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  margin: 1em auto;
+  width: 80%;
+}
+
+.logo {
+  float: left;
+  cursor: default;
+}
+
+.header {
+  font-size: xx-large;
+  font-family: "Corbel", "Arial";
+  border-bottom: 2px solid black;
+}
+
+.command {
+  background: white;
+  color: #333;
+  font-family: 'Consolas', monospace;
+  font-size: 14px;
+  padding: 0.75em;
+  border: solid 1px #ddd;
+  margin: 1em auto;
+  width: 80%;
+}
+
+.dollar {
+  color: #123;
+  font-weight: bold;
+}
+
+.block {
+  display: block;
+  margin: 0.5em auto;
+  width: 80%;
+}
+
+.block>div {
+  width: 49%;
+  display: inline-block;
+  vertical-align: top;
+  margin: 0;
+  padding: 0;
+}
+
+#bar {
+  position: fixed;
+  width: 100%;
+  padding: 0.5em 0;
+  z-index: 100;
+}
+
 code a {
-    text-decoration: none;
-    color: inherit;
+  text-decoration: none;
+  color: inherit;
 }
 
 #cssmenu {
   display: inline-block;
-  background: #f96e5b;
+  background: #cc1d26;
 }
 #cssmenu ul {
   list-style: none;
@@ -156,8 +246,8 @@ code a {
   display: block;
   padding: 15px 25px;
   font-family: 'Open Sans', sans-serif;
-  font-weight: 700;
   text-transform: uppercase;
+  font-weight: 700;
   font-size: 14px;
   position: relative;
 } 
@@ -181,61 +271,57 @@ code a {
 }
 @media screen and (max-width: 680px) {
   p {
-    width: 80%;
+  width: 80%;
   }
 
-  #bug {
-      height: 9em;
+  #header td {
+  height: 100px;
+  }
+
+  #container {
+  margin-top: 135px;
+  }
+
+  #editor {
+  top: 150px;
   }
 
   .block>div {
-    width: auto;
-    display: block;
+  width: auto;
+  display: block;
   }
 
   table {
-    text-align: center;
+  text-align: center;
   }
   
   table tr {
-    float: none;
+  float: none;
   }
-  
+  #cssmenu ul {
+  padding: 5px 0px;
+  }
   #cssmenu ul li {
-    float: none;
+  float: none;
   }
   #cssmenu ul li a {
-    width: 100%;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
+  width: 100%;
+  padding: 7px 25px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
   }
   #cssmenu ul li a:after {
-    display: none;
+  display: none;
   }
   #cssmenu ul li a:before {
-    height: 1px;
-    background: #ffffff;
-    width: 100%;
-    opacity: .2;
+  height: 1px;
+  background: #ffffff;
+  width: 100%;
+  opacity: .2;
   }
   #cssmenu ul li.last > a:before,
   #cssmenu ul li:last-child > a:before {
-    display: none;
+  display: none;
   }
-}
-
-::-webkit-scrollbar {
-    width: 0.5em;
-    height: 0.5em;
-    background-color: white;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #ff685c;
-}
-
-::-webkit-scrollbar-thumb:hover,
-::-webkit-scrollbar-thumb:active  {
-    background: #ff887c;
 }
