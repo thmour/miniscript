@@ -35,10 +35,18 @@ console.log(fib(5));
 
 ##Under development until v.1.0.0
 
+### v0.5.0 expected
+1. Correct error stack
+2. Produce sourcemaps
+3. More optimisations
+4. Better string interpolation
+5. Import improvements
+
 ### v0.4.0 (17/12/2014)
 1. More functionality
-2. New syntax (will never change from now on)
-3. 
+2. Better syntax (almost finalized)
+3. Better Performance
+4. Bug fixes (nested loop statements and others)
 
 ### v0.3.0 (2/9/2014)
 1. Miniscript web compiler
