@@ -773,7 +773,9 @@
                     turned into <code><code class="red">this</code>.member</code> has a problem being
                     applied inside strings (non-interpolated). String interpolation is detected with a
                     simple regural expression for now so it can't parse parentheses inside parentheses
-                    and other recursive patterns. There is a workaround for some of these problems.
+                    and other recursive patterns. Same goes with regular expressions, if you happen to 
+                    have 2 divisions in one line then the compiler will try to parse it as a regex, in
+                    the next version this will be fixed. Below are the workarounds for the <code>.member</code> problem. 
                 </p>
                 <code class="block">
                     <pre class="brush: mini;">
