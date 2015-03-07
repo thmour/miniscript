@@ -1,14 +1,12 @@
 #!/usr/bin/env node
 
-function _eval(code) {
-	return global._ = eval(code);
-}
-
 (function() {
-	var util    = require('util'),
-		path    = require('path'),
-	    fs      = require('fs'),
-		mini    = require('../lib/mini.js');
+	var util = require('util'),
+		path = require('path'),
+	    fs   = require('fs'),
+	    vm   = require('vm'),
+	    repl = require('repl'),
+		mini = require('../lib/mini.js');
 
 	var args = process.argv.slice(2);
 
@@ -100,79 +98,25 @@ function _eval(code) {
 			}
 		}
 	} else {
-		var stdin  = process.stdin, 
-		    stdout = process.stdout,
-		    source = '';
-		    prompt = function () { stdout.write(source === '' ? '> ' : '... '); };
+		var result, input;
 
 		console.log('\nMinicript version:', require('../package.json').version);
 		console.log('Press Ctrl+C (SIGINT) to exit or cancel multi-line statement.\n');
 
-		stdin.setEncoding('utf8');
-
-		//Special thanks
-		var vm = require('vm');
-		var Script = vm.Script;
-		var Module = require('module');
-
-		var context = Script.createContext();
-		context.global = context.root = context.GLOBAL = context;
-		context.__filename = path.resolve(process.cwd() + '/eval');
-    	context.__dirname  = path.dirname(context.__filename);
-        
-        context.module = _module = new Module('eval');
-        context.require = _require = function(path) {
-          return Module._load(path, _module, true);
-        };
-        _module.filename = context.__filename;
-        _ref1 = Object.getOwnPropertyNames(require);
-        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-          r = _ref1[_i];
-          if (r !== 'paths') {
-            _require[r] = require[r];
-          }
-        }
-        _require.paths = _module.paths = Module._nodeModulePaths(process.cwd());
-        _require.resolve = function(request) {
-          return Module._resolveFilename(request, _module);
-        };
-        //end thanks
-        context.console = console;
-        context.process = process;
-        _require.extensions['.mini'] = function(module, file) {
-			return module._compile(mini.compile(fs.readFileSync(file, 'utf8').toString()), file);
-		}
-
-		global.clear = function() {
-			console.log('\033c');
-		}
-
-		stdin.on('readable', function () {
-			var chunk = stdin.read(), code;
-				if (chunk !== null) {
-					source += chunk;
-					try {
-						result = vm.runInContext(mini.compile(source), context);
-						console.log(util.inspect(result, {colors:true}));
-		    			source = '';
-					} catch (e) {
-						if(e.message.indexOf("got 'EOF'") === -1) {
-							source = '';
-							console.log(e);
-						}
+		repl.start({
+			eval: function (cmd, context, filename, callback) {
+				input = cmd.replace(/\uFF00/g, '\n').replace(/^\(([\s\S]*)\n\)$/m, '$1');
+				try {
+					result = vm.runInContext(mini.compile(input), context);
+					callback(null, result);
+				} catch (error) {
+					if (error.message.indexOf("got 'EOF'") !== -1) {
+						this.bufferedCommand = input;
+						this.displayPrompt();
+					} else {
+						callback(error);
 					}
 				}
-				prompt();
-		});
-
-		process.on('SIGINT', function() {
-			if(source.length > 0) {
-				source = '';
-				stdout.write('\n');
-				prompt();
-			} else {
-				console.log('\nExiting now');
-				process.exit(0);
 			}
 		});
 	}

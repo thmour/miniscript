@@ -42,6 +42,10 @@ console.log(fib(5));
 4. Better string interpolation
 5. Import improvements
 
+### v0.4.1 (7/3/2015)
+1. Fixed `Script.createContext()` bug to work on node v0.12
+2. Interactive miniscript now uses node's REPL instead of a custom implementation. REPL autocomplete feature is not supported (yet).
+
 ### v0.4.0 (17/12/2014)
 1. More functionality
 2. Better syntax (almost finalized)
