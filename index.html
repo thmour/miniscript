@@ -101,7 +101,7 @@
                 <td>
                     <div id='cssmenu'>
                         <ul>
-                            <!--<li><a id="trybtn" href='#' onclick="toggle_editor(); return false;">Try</a></li>-->
+                            <li><a id="trybtn" href='#' onclick="toggle_editor(); return false;" style="display:none;">Try</a></li>
                             <li><a href='#Documentation'><span>Documentation</span></a></li>
                             <li class='last'><a href='https://github.com/thmour/miniscript' target="_blank">View on Github</a></li>
                         </ul>
@@ -114,7 +114,7 @@
         <textarea id="input" rows="20" placeholder="Insert code here."></textarea>
         <div style="display: inline-block">
             <button id="run">run</button>
-            <textarea id="output" rows="20"placeholder="Javascript result" readonly></textarea>
+            <textarea id="output" rows="20" placeholder="Javascript result" readonly></textarea>
         </div>
     </div>
     <div id="container">
@@ -839,12 +839,12 @@
                 </code>
             </div>
         </ul>
+    </div>
     <script type="text/javascript" src="scripts/xregexp-min.js"></script>
     <script type="text/javascript" src="scripts/shCore.js"></script>
     <script type="text/javascript" src="scripts/shBrushMini.js"></script>
     <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
     <script type="text/javascript" src="scripts/js_beautifier.js"></script>
-    <script type="text/javascript" src="scripts/web-miniscript-min.js"></script>
     <script type="text/javascript">SyntaxHighlighter.all();</script>
     <script src="scripts/jquery.min.js"></script>
     <script src="scripts/jquery.scrollUp.min.js"></script>
