@@ -191,11 +191,11 @@ p code.purple {
 .block {
   display: block;
   margin: 0.5em auto;
-  width: 80%;
+  width: 75%;
 }
 
 .block>div {
-  width: 49%;
+  width: 45%;
   display: inline-block;
   vertical-align: top;
   margin: 0;
